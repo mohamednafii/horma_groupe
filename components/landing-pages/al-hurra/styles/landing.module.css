@@ -1,0 +1,179 @@
+/* ==========================================================================
+   Gommage Akar Fassi — scope, tokens and base
+   --------------------------------------------------------------------------
+   Everything here hangs off .scope. The Zayna Atlas tokens deliberately do NOT
+   go on :root: several of their names (--ink-900, --border-hairline,
+   --text-inverse, --surface-page, --gutter, --section-y) collide with Horma
+   Group tokens in app/globals.css, and redefining those globally would repaint
+   the rest of the site.
+
+   The base rules below also re-assert the element styles Horma's globals set
+   on h1-h4, p, a, and section[id], which would otherwise leak in here.
+   ========================================================================== */
+
+.scope {
+  /* ── Base ramp: warm limestone & linen (surfaces) ────────────────────── */
+  --sand-50: #fcfaf6;
+  --sand-100: #f8f3eb;
+  --sand-200: #f1e8db;
+  --sand-300: #e7d9c6;
+  --sand-400: #d9c6ac;
+  /* ── Ghassoul clay: warm neutrals (borders, muted type) ──────────────── */
+  --clay-100: #e3dacd;
+  --clay-200: #cfc3b1;
+  --clay-300: #b4a692;
+  --clay-400: #8e8272;
+  --clay-500: #6b6155;
+  /* ── Atlas: deep olive-green (brand primary) ─────────────────────────── */
+  --atlas-100: #dce3d6;
+  --atlas-300: #8c9c7f;
+  --atlas-500: #54664a;
+  --atlas-700: #31402b;
+  --atlas-900: #1e2a1b;
+  /* ── Brass: lantern metal (accent) ───────────────────────────────────── */
+  --brass-200: #ead9b4;
+  --brass-400: #c9a55c;
+  --brass-500: #b08a45;
+  --brass-700: #8a6a31;
+  /* ── Aker Fassi: rose-terracotta (warm accent) ───────────────────────── */
+  --fassi-200: #efd3cb;
+  --fassi-400: #c6786c;
+  --fassi-600: #a2483b;
+  /* ── Nila: indigo (rare cool accent) ─────────────────────────────────── */
+  --nila-300: #9aa8be;
+  --nila-600: #3b4e70;
+  --nila-800: #22304a;
+  /* ── Ink ─────────────────────────────────────────────────────────────── */
+  --ink-900: #1b1815;
+  --ink-700: #3a3530;
+  --ink-500: #5e564d;
+  --white: #ffffff;
+
+  /* ── Semantic ────────────────────────────────────────────────────────── */
+  --text-inverse: var(--sand-100);
+  --border-hairline: #e6dccd;
+  --border-focus: var(--brass-500);
+
+  /* ── Motion ──────────────────────────────────────────────────────────── */
+  --ease-standard: cubic-bezier(0.32, 0.72, 0.28, 1);
+  --duration-fast: 140ms;
+
+  /* Tajawal is wired up by next/font in the route layout. */
+  font-family: var(--font-tajawal), system-ui, sans-serif;
+  /* The source page never sets a line-height, so text sits on the UA default.
+     Horma's globals impose 1.65 on body, which would loosen every block that
+     does not declare its own. */
+  line-height: normal;
+  background: var(--sand-100);
+  color: var(--atlas-900);
+  min-height: 100vh;
+  padding-bottom: 104px; /* clears the fixed sticky order bar */
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Sticky bar switched off -> the reserved strip goes away with it. */
+.noSticky {
+  padding-bottom: 0;
+}
+
+/* ── Base resets, scoped ───────────────────────────────────────────────
+   Each rule here replaces a bare element rule the source page relied on, and
+   has to out-rank the equivalent in Horma's globals.css or Tailwind preflight.
+
+   The element half is wrapped in :where() so these keep the *losing* behaviour
+   bare element selectors had in the source: specificity stays at one class
+   (from .scope), which beats every (0,0,1) global but still yields to any
+   component rule that qualifies its class with a parent. Without :where() the
+   compound would score (0,1,1) and silently override the section modules. */
+
+.scope :where(h1),
+.scope :where(h2),
+.scope :where(h3) {
+  font-family: inherit;
+  color: inherit;
+  letter-spacing: normal;
+  margin: 0;
+}
+
+/* The source page leaves paragraph margins at the UA default and its vertical
+   rhythm depends on them: inside the flex columns they do not collapse, so they
+   add real space between a card's title and its note. Horma's globals and
+   Tailwind preflight both zero them. */
+.scope :where(p) {
+  margin: 1em 0;
+}
+
+/* Same story for the ingredient list and the review figures. No list markers
+   appear because every <li> is display:flex rather than list-item. */
+.scope :where(ul) {
+  margin: 1em 0;
+  padding-inline-start: 40px;
+}
+
+.scope :where(figure) {
+  margin: 1em 40px;
+}
+
+.scope :where(a) {
+  color: var(--fassi-600);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.scope :where(a):hover {
+  color: color-mix(in srgb, var(--fassi-600) 78%, var(--atlas-900));
+}
+
+.scope :where(img) {
+  max-width: 100%;
+}
+
+.scope input::placeholder {
+  color: var(--clay-300);
+}
+
+.scope :focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Horma's globals give every section[id] a 104px scroll margin to clear its
+   sticky header. This page has none and offsets the jump itself. */
+.scope section[id] {
+  scroll-margin-top: 0;
+}
+
+/* ── Decorative zellige corners ──────────────────────────────────────────
+   The source art fades to opaque cream rather than transparency, which would
+   show a faint rectangular edge over the page. The mask dissolves it. */
+
+.zellige {
+  position: absolute;
+  top: 0;
+  width: min(46vw, 420px);
+  height: auto;
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom right, #000 30%, transparent 88%);
+  mask-image: linear-gradient(to bottom right, #000 30%, transparent 88%);
+}
+
+.zelligeStart {
+  left: 0;
+}
+
+.zelligeEnd {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scope *,
+  .scope *::before,
+  .scope *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}

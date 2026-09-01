@@ -1,0 +1,73 @@
+/* Ingredient grid inside a panel, with the two claim pills beneath it. */
+
+.panel {
+  padding: clamp(20px, 3vw, 30px) clamp(14px, 2.5vw, 26px);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(18px, 3vw, 26px) clamp(8px, 2vw, 18px);
+  /* No list reset here on purpose: the source page leaves the <ul> on UA
+     defaults, and its margin plus inline padding are part of the layout.
+     Those defaults are restored by .scope ul in landing.module.css.
+     No markers appear because each <li> is display:flex, not list-item. */
+}
+
+.item {
+  flex: 1 1 110px;
+  max-width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Square box, contained artwork: the five cutouts have different aspect
+   ratios but must sit on a shared baseline. */
+.list .image {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.name {
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+/* Optional supporting line. Only some products give their ingredients one. */
+.description {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--clay-500);
+  text-align: center;
+  margin-top: -2px;
+}
+
+.claims {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--clay-100);
+}
+
+.claim {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--sand-100);
+  border: 1px solid var(--clay-100);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-700);
+}

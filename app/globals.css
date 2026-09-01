@@ -1,26 +1,685 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Horma Group — Design System
+   Source: "design system"/project/tokens/*.css
+
+   Token values are copied verbatim from the design system. Product code uses
+   the SEMANTIC ALIASES (--surface-card, --text-muted, --action-primary …);
+   reach for a raw ramp value only when defining a new alias.
+
+   Scoping note: the element-level base rules live under `.hg-site`, not on
+   bare selectors, so they cannot reach the Arabic landing pages under /lp.
+   Those pages carry their own token scope and must stay untouched.
+   ========================================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── Brand ramps ─────────────────────────────────────────────────────── */
+  --orange-50: #fff3ec;
+  --orange-100: #ffe1d1;
+  --orange-200: #fdc3a4;
+  --orange-300: #f9a176;
+  --orange-400: #f4823f;
+  --orange-500: #ef6520;
+  --orange-600: #d5541a;
+  --orange-700: #ae4315;
+  --orange-800: #853311;
+  --orange-900: #5e240c;
+
+  --blue-50: #eef3fb;
+  --blue-100: #d8e3f5;
+  --blue-200: #b0c6ea;
+  --blue-300: #7fa1da;
+  --blue-400: #4b78c2;
+  --blue-500: #204890;
+  --blue-600: #1b3d7c;
+  --blue-700: #163264;
+  --blue-800: #102344;
+  --blue-900: #0a1729;
+
+  /* Deep hull navy — the dark surface family for full-bleed sections */
+  --navy-900: #08111f;
+  --navy-850: #0c1a2e;
+  --navy-800: #11233c;
+  --navy-700: #183151;
+
+  /* ── Neutrals: ink → paper ───────────────────────────────────────────── */
+  --ink-900: #101010;
+  --ink-800: #1d1b20;
+  --ink-700: #2c2a31;
+  --ink-600: #49454f;
+  --ink-500: #6b6873;
+  --ink-400: #918d99;
+  --ink-300: #bebac4;
+  --ink-200: #dedce2;
+  --ink-100: #edecf0;
+  --ink-050: #f5f4f7;
+  --paper: #f8f8f8;
+  --white: #ffffff;
+
+  /* Coast — warm sand tint for alternating quiet sections */
+  --sand-50: #fbf8f4;
+  --sand-100: #f3ede4;
+  --sand-200: #e5dacd;
+
+  /* ── Semantic status ─────────────────────────────────────────────────── */
+  --success-50: #e8f5ee;
+  --success-500: #14804a;
+  --success-700: #0e5d36;
+  --warning-50: #fdf4e3;
+  --warning-500: #b7791f;
+  --warning-700: #8a5a16;
+  --error-50: #fdecea;
+  --error-500: #b42318;
+  --error-700: #8a1b12;
+  --info-50: #eef3fb;
+  --info-500: #204890;
+  --info-700: #163264;
+
+  /* ── Cargo accents: category coding / data-viz only ──────────────────── */
+  --cargo-rust: #b4483c;
+  --cargo-teal: #2c7a7b;
+  --cargo-sand: #c9a227;
+  --cargo-slate: #4a5568;
+  --cargo-sea: #2e6f9e;
+
+  /* ── Semantic aliases — use THESE in product code ────────────────────── */
+  --bg-page: var(--paper);
+  --bg-page-alt: var(--sand-50);
+  --bg-inverse: var(--navy-900);
+  --surface-card: var(--white);
+  --surface-raised: var(--white);
+  --surface-sunken: var(--ink-050);
+  --surface-inverse: var(--navy-800);
+  --surface-brand-soft: var(--orange-50);
+  --surface-trust-soft: var(--blue-50);
+
+  --text-strong: var(--ink-900);
+  --text-body: var(--ink-700);
+  --text-muted: var(--ink-500);
+  --text-subtle: var(--ink-400);
+  --text-on-brand: var(--white);
+  --text-on-inverse: var(--white);
+  --text-on-inverse-muted: rgba(255, 255, 255, 0.68);
+  --text-link: var(--blue-500);
+  --text-link-hover: var(--orange-600);
+
+  --border-subtle: var(--ink-100);
+  --border-default: var(--ink-200);
+  --border-strong: var(--ink-300);
+  --border-inverse: rgba(255, 255, 255, 0.14);
+  --border-focus: var(--blue-400);
+
+  --action-primary: var(--orange-500);
+  --action-primary-hover: var(--orange-600);
+  --action-primary-active: var(--orange-700);
+  --action-secondary: var(--blue-500);
+  --action-secondary-hover: var(--blue-600);
+  --action-disabled: var(--ink-200);
+  --focus-ring: 0 0 0 3px rgba(32, 72, 144, 0.32);
+  --focus-ring-inverse: 0 0 0 3px rgba(255, 255, 255, 0.45);
+
+  /* Horizon rules, route lines and photo scrims — the structural line motifs */
+  --line-horizon: linear-gradient(90deg, transparent, var(--border-default) 12%, var(--border-default) 88%, transparent);
+  --line-route: repeating-linear-gradient(90deg, var(--ink-300) 0 4px, transparent 4px 10px);
+  --scrim-photo: linear-gradient(180deg, rgba(8, 17, 31, 0) 0%, rgba(8, 17, 31, 0.45) 55%, rgba(8, 17, 31, 0.88) 100%);
+  --scrim-photo-side: linear-gradient(90deg, rgba(8, 17, 31, 0.86) 0%, rgba(8, 17, 31, 0.35) 55%, rgba(8, 17, 31, 0) 100%);
+
+  /* ── Type ────────────────────────────────────────────────────────────── */
+  /* Families resolve to the next/font faces wired up in app/layout.tsx. */
+  --font-display: var(--font-poppins), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-display-1: 76px;
+  --text-display-2: 60px;
+  --text-h1: 48px;
+  --text-h2: 36px;
+  --text-h3: 28px;
+  --text-h4: 22px;
+  --text-h5: 18px;
+  --text-body-lg: 18px;
+  --text-body: 16px;
+  --text-body-sm: 14px;
+  --text-caption: 13px;
+  --text-micro: 12px;
+  --text-overline: 11px;
+
+  --leading-display: 1.04;
+  --leading-heading: 1.14;
+  --leading-snug: 1.32;
+  --leading-body: 1.6;
+  --leading-relaxed: 1.72;
+
+  --tracking-display: -0.03em;
+  --tracking-heading: -0.02em;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.02em;
+  --tracking-overline: 0.14em;
+
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Composed roles */
+  --type-display-1: var(--weight-semibold) var(--text-display-1) / var(--leading-display) var(--font-display);
+  --type-display-2: var(--weight-semibold) var(--text-display-2) / var(--leading-display) var(--font-display);
+  --type-h1: var(--weight-semibold) var(--text-h1) / var(--leading-heading) var(--font-display);
+  --type-h2: var(--weight-semibold) var(--text-h2) / var(--leading-heading) var(--font-display);
+  --type-h3: var(--weight-semibold) var(--text-h3) / var(--leading-snug) var(--font-display);
+  --type-h4: var(--weight-semibold) var(--text-h4) / var(--leading-snug) var(--font-display);
+  --type-h5: var(--weight-semibold) var(--text-h5) / var(--leading-snug) var(--font-body);
+  --type-body-lg: var(--weight-regular) var(--text-body-lg) / var(--leading-relaxed) var(--font-body);
+  --type-body: var(--weight-regular) var(--text-body) / var(--leading-body) var(--font-body);
+  --type-body-sm: var(--weight-regular) var(--text-body-sm) / var(--leading-body) var(--font-body);
+  --type-label: var(--weight-medium) var(--text-body-sm) / 1.3 var(--font-body);
+  --type-button: var(--weight-semibold) var(--text-body-sm) / 1 var(--font-body);
+  --type-nav: var(--weight-medium) var(--text-body-sm) / 1 var(--font-body);
+  --type-caption: var(--weight-regular) var(--text-caption) / 1.45 var(--font-body);
+  --type-overline: var(--weight-semibold) var(--text-overline) / 1.2 var(--font-body);
+  --type-mono: var(--weight-medium) var(--text-body-sm) / 1.4 var(--font-mono);
+
+  /* ── Spacing — 4px base ──────────────────────────────────────────────── */
+  --space-0: 0px;
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 20px;
+  --space-7: 24px;
+  --space-8: 32px;
+  --space-9: 40px;
+  --space-10: 48px;
+  --space-11: 64px;
+  --space-12: 80px;
+  --space-13: 96px;
+  --space-14: 120px;
+  --space-15: 160px;
+
+  --pad-control-y: 12px;
+  --pad-control-x: 20px;
+  --pad-card: 24px;
+  --pad-card-lg: 32px;
+  --pad-cell: 16px;
+  --gap-inline: 8px;
+  --gap-stack: 16px;
+  --gap-grid: 24px;
+
+  --section-y-sm: 64px;
+  --section-y: 96px;
+  --section-y-lg: 120px;
+  --section-y-mobile: 56px;
+
+  /* ── Radius ──────────────────────────────────────────────────────────── */
+  --radius-0: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-3xl: 36px;
+  --radius-pill: 999px;
+  --radius-control: 10px;
+  --radius-button: 10px;
+  --radius-card: 20px;
+  --radius-card-lg: 28px;
+  --radius-media: 20px;
+  --radius-sheet: 28px;
+  --radius-avatar: 999px;
+
+  /* ── Elevation — navy-tinted, never neutral black ────────────────────── */
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px rgba(10, 23, 41, 0.06);
+  --shadow-sm: 0 2px 6px rgba(10, 23, 41, 0.06), 0 1px 2px rgba(10, 23, 41, 0.04);
+  --shadow-md: 0 8px 24px rgba(10, 23, 41, 0.08), 0 2px 6px rgba(10, 23, 41, 0.04);
+  --shadow-lg: 0 20px 48px rgba(10, 23, 41, 0.12), 0 4px 12px rgba(10, 23, 41, 0.06);
+  --shadow-xl: 0 32px 72px rgba(10, 23, 41, 0.16);
+  --shadow-brand: 0 10px 24px rgba(239, 101, 32, 0.28);
+  --shadow-trust: 0 10px 24px rgba(32, 72, 144, 0.24);
+  --shadow-inset-hairline: inset 0 0 0 1px var(--border-subtle);
+  --blur-glass: saturate(140%) blur(18px);
+  --glass-light: rgba(255, 255, 255, 0.72);
+  --glass-dark: rgba(8, 17, 31, 0.56);
+
+  /* ── Motion — cargo moves: decisive start, settled stop ──────────────── */
+  --duration-instant: 80ms;
+  --duration-fast: 140ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --duration-slower: 520ms;
+  --duration-reveal: 760ms;
+  --ease-horizon: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-cargo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.4);
+  --transition-control: background-color var(--duration-fast) var(--ease-horizon), color var(--duration-fast) var(--ease-horizon),
+    border-color var(--duration-fast) var(--ease-horizon), box-shadow var(--duration-fast) var(--ease-horizon),
+    transform var(--duration-fast) var(--ease-horizon);
+  --transition-card: transform var(--duration-base) var(--ease-horizon), box-shadow var(--duration-base) var(--ease-horizon),
+    border-color var(--duration-base) var(--ease-horizon);
+  --lift-card: translateY(-3px);
+  --press-scale: 0.985;
+
+  /* ── Grid & layout ───────────────────────────────────────────────────── */
+  --container-max: 1280px;
+  --container-wide: 1440px;
+  --container-narrow: 820px;
+  --container-form: 560px;
+  --grid-gutter: 24px;
+  --gutter-mobile: 20px;
+  --gutter-tablet: 32px;
+  --gutter-desktop: 48px;
+  --header-h: 76px;
+  --header-h-compact: 60px;
+  --tap-min: 44px;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-drawer: 300;
+  --z-modal: 400;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+    --duration-reveal: 0ms;
+    --lift-card: none;
+  }
+}
+
+/* ==========================================================================
+   Base — scoped to .hg-site
+   The corporate pages wrap their content in .hg-site. Keeping these off bare
+   selectors is what guarantees the /lp landing pages are unaffected.
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.hg-site {
+  background: var(--bg-page);
+  color: var(--text-body);
+  font: var(--type-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.hg-site h1,
+.hg-site h2,
+.hg-site h3,
+.hg-site h4,
+.hg-site h5 {
+  margin: 0;
+  color: var(--text-strong);
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-heading);
+}
+.hg-site h1 { font: var(--type-h1); letter-spacing: var(--tracking-heading); }
+.hg-site h2 { font: var(--type-h2); letter-spacing: var(--tracking-heading); }
+.hg-site h3 { font: var(--type-h3); letter-spacing: var(--tracking-heading); }
+.hg-site h4 { font: var(--type-h4); letter-spacing: var(--tracking-heading); }
+.hg-site h5 { font: var(--type-h5); letter-spacing: var(--tracking-tight); }
+
+.hg-site p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.hg-site a {
+  color: var(--text-link);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-horizon);
+}
+.hg-site a:hover {
+  color: var(--text-link-hover);
+}
+
+.hg-site :focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-xs);
+}
+
+.hg-site ::selection {
+  background: var(--orange-200);
+  color: var(--ink-900);
+}
+
+/* Section anchors must clear the sticky header. */
+.hg-site section[id] {
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+/* ==========================================================================
+   Layout primitives
+   ========================================================================== */
+
+.hg-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter-mobile);
+}
+@media (min-width: 768px) {
+  .hg-container {
+    padding-inline: var(--gutter-tablet);
+  }
+}
+@media (min-width: 1024px) {
+  .hg-container {
+    padding-inline: var(--gutter-desktop);
+  }
+}
+
+/* Section rhythm: 96px desktop, 56px mobile, per the system's spacing scale. */
+.hg-section {
+  padding-block: var(--section-y-mobile);
+}
+@media (min-width: 768px) {
+  .hg-section {
+    padding-block: var(--section-y);
+  }
+}
+.hg-section--lg {
+  padding-block: var(--section-y-mobile);
+}
+@media (min-width: 768px) {
+  .hg-section--lg {
+    padding-block: var(--section-y-lg);
+  }
+}
+
+.hg-overline {
+  font: var(--type-overline);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hg-mono {
+  font: var(--type-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Interaction states
+   Hover: cards lift 3px and deepen shadow; buttons darken one ramp step.
+   Press: darken again and scale 0.985 — the element sits back down.
+   ========================================================================== */
+
+.hg-card {
+  transition: var(--transition-card);
+}
+.hg-card[data-interactive]:hover {
+  transform: var(--lift-card);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-default);
+}
+
+.hg-btn {
+  transition: var(--transition-control);
+}
+.hg-btn:active:not(:disabled) {
+  transform: scale(var(--press-scale));
+  box-shadow: none;
+}
+.hg-btn[data-variant="primary"]:hover:not(:disabled) {
+  background: var(--action-primary-hover);
+  border-color: var(--action-primary-hover);
+}
+.hg-btn[data-variant="primary"]:active:not(:disabled) {
+  background: var(--action-primary-active);
+  border-color: var(--action-primary-active);
+}
+.hg-btn[data-variant="secondary"]:hover:not(:disabled) {
+  background: var(--action-secondary-hover);
+  border-color: var(--action-secondary-hover);
+}
+.hg-btn[data-variant="tertiary"]:hover:not(:disabled) {
+  background: var(--ink-050);
+  border-color: var(--border-strong);
+}
+.hg-btn[data-variant="tertiary"][data-inverse]:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.42);
+}
+.hg-btn[data-variant="ghost"]:hover:not(:disabled) {
+  background: var(--ink-050);
+}
+.hg-btn[data-variant="ghost"][data-inverse]:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Nav pill */
+.hg-nav-link {
+  transition: var(--transition-control);
+}
+.hg-nav-link:hover {
+  background: var(--surface-brand-soft);
+  color: var(--orange-700);
+}
+.hg-nav-link[data-inverse]:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+}
+
+/* Footer / inverse links.
+   Qualified with .hg-site so it out-ranks the scoped `a` colour rule, which
+   would otherwise paint these blue-on-navy. */
+.hg-site .hg-link-inverse {
+  color: var(--text-on-inverse-muted);
+  transition: color var(--duration-fast) var(--ease-horizon);
+}
+.hg-site .hg-link-inverse:hover {
+  color: var(--white);
+}
+
+/* Media tile: image scales inside a fixed frame on hover. */
+.hg-media img {
+  transition: transform var(--duration-slow) var(--ease-cargo);
+}
+.hg-media:hover img {
+  transform: scale(1.045);
+}
+
+/* ==========================================================================
+   Section reveal — the one scroll animation in the system.
+   520ms, ease-cargo, 14px rise. Collapses to nothing under reduced motion.
+   ========================================================================== */
+
+.hg-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--duration-slower) var(--ease-cargo), transform var(--duration-slower) var(--ease-cargo);
+}
+.hg-reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hg-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hg-media img {
+    transition: none;
+  }
+  .hg-media:hover img {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Header responsive behaviour
+   The pill nav and the desktop CTA give way to a burger + navy drawer below
+   1024px; the utility strip drops its secondary items below 768px.
+   ========================================================================== */
+
+.hg-nav {
+  display: none;
+  align-items: center;
+  gap: 4;
+  margin-inline-start: 8px;
+}
+@media (min-width: 1200px) {
+  .hg-nav {
+    display: flex;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .hg-burger {
+    display: inline-flex !important;
+  }
+  .hg-hide-md {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .hg-hide-sm {
+    display: none !important;
+  }
+}
+
+/* Inputs: blue border + halo on focus, per the system's focus spec. */
+.hg-input::placeholder {
+  color: var(--text-subtle);
+}
+.hg-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: var(--focus-ring);
+}
+
+/* ==========================================================================
+   Responsive typography
+   The system's scale is a desktop scale. Headings fluid-scale down rather than
+   wrapping badly; body copy never drops below 14px.
+   ========================================================================== */
+
+.hg-display {
+  font: var(--type-display-2);
+  font-size: clamp(34px, 6.2vw, 60px);
+  letter-spacing: var(--tracking-display);
+  color: var(--white);
+}
+
+.hg-site h1 {
+  font-size: clamp(30px, 5vw, 48px);
+}
+.hg-site h2 {
+  font-size: clamp(26px, 3.6vw, 36px);
+}
+.hg-site h3 {
+  font-size: clamp(21px, 2.4vw, 28px);
+}
+.hg-site h4 {
+  font-size: clamp(18px, 1.8vw, 22px);
+}
+
+/* Grids used across the marketing bands. */
+/* `min(track, 100%)` lets a track collapse below its ideal width instead of
+   forcing the page to scroll on a 320px screen. */
+.hg-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: var(--gap-grid);
+}
+.hg-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--gap-grid);
+}
+.hg-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--gap-grid);
+}
+
+/* Split band: copy column beside a wider content column, stacking under 900px. */
+.hg-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+@media (min-width: 900px) {
+  .hg-split {
+    grid-template-columns: minmax(min(280px, 100%), 0.9fr) minmax(min(320px, 100%), 1.1fr);
+    gap: 56px;
+    align-items: start;
+  }
+}
+
+/* Grid and split children default to `min-width: auto`, so a single wide child
+   (a nowrap badge, a long e-mail) can stop the whole track from shrinking and
+   push the page into horizontal scroll on a 320px screen. */
+.hg-split > *,
+.hg-grid-2 > *,
+.hg-grid-3 > *,
+.hg-grid-4 > * {
+  min-width: 0;
+}
+
+/* Long unbreakable strings (addresses, e-mails, references) wrap instead of
+   widening their container. */
+.hg-site a,
+.hg-site p,
+.hg-mono {
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================================================
+   AL HURRA (landing-mouad) — Tailwind theme registration
+   --------------------------------------------------------------------------
+   Tailwind v4 only emits a utility if the theme knows its name, so the ported
+   shadcn primitives under components/landing-mouad/ui need these registered
+   here — this is the single Tailwind entry point.
+
+   Safe by construction:
+   - Every value is a `var(--…)` reference, and those variables are defined
+     ONLY on `.lp-alhurra-mouad` (app/lp/al-hurra.css). Outside that scope the
+     utilities resolve to nothing.
+   - None of these names is used by any existing page or token.
+   - `@theme inline` emits the reference rather than a literal, so no concrete
+     colour lands in :root.
+   - Radius and font are deliberately NOT registered: --radius-sm/md/lg/xl and
+     the font stack already exist in :root for the Horma system, and @theme
+     would overwrite them. The template's radius scale is applied instead as
+     scoped `.rounded-*` overrides inside al-hurra.css.
+   ========================================================================== */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }

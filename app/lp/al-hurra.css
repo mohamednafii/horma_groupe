@@ -1,0 +1,226 @@
+/* ==========================================================================
+   AL HURRA (landing-mouad) — scoped stylesheet
+   Ported from landing_mouad/landing_pages_alhurra/site/app/globals.css
+
+   Everything here lives under `.lp-alhurra-mouad`. The source file put its
+   tokens on `:root` and its resets on bare `*`, `html`, `body`, `button`, `a`
+   and `input`; each of those has been rewritten as a scoped descendant rule so
+   nothing can reach the existing /lp pages or the corporate site.
+
+   Imported only by app/lp/(al-hurra)/layout.tsx.
+   ========================================================================== */
+
+.lp-alhurra-mouad {
+  /* ── shadcn tokens (source :root, verbatim values) ─────────────────────
+     The utility names are registered in app/globals.css as `var(--…)`
+     references, so they resolve only inside this scope. */
+  --background: #fffdf9;
+  --foreground: #2d1e17;
+  --card: #ffffff;
+  --card-foreground: #2d1e17;
+  --primary: #c47a0a;
+  --primary-foreground: #ffffff;
+  --secondary: #fcf4e8;
+  --secondary-foreground: #6f410c;
+  --muted: #f8f2e9;
+  --muted-foreground: #776c64;
+  --accent: #f6e7cf;
+  --accent-foreground: #8c5106;
+  --destructive: #b42318;
+  --border: #ecdac1;
+  --input: #e8d7c2;
+  --ring: #c47a0a;
+
+  /* Renamed from the source's `--radius`: the host already owns
+     --radius-sm/md/lg/xl/2xl/3xl in :root for the Horma design system, and
+     those must not be touched. */
+  --alh-radius: 0.7rem;
+
+  /* Source `body` rules, moved onto the scope root. */
+  min-width: 320px;
+  color: var(--foreground);
+  background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 80% 2%, rgb(234 203 153 / 16%), transparent 26rem),
+    linear-gradient(180deg, #fffefa 0%, #fffdf9 100%);
+  font-family: var(--font-cairo), Tahoma, Arial, sans-serif;
+}
+
+/* Source: `@layer base { * { @apply border-border outline-ring/50 } }`.
+   `:where()` keeps the element half at zero specificity so component classes
+   still win, which is what the shadcn base rule relies on. */
+.lp-alhurra-mouad :where(*) {
+  border-color: var(--border);
+  outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+}
+
+.lp-alhurra-mouad :where(button, a, input, select, textarea) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lp-alhurra-mouad ::selection {
+  color: #2d1e17;
+  background: #ecd09d;
+}
+
+/* ── Radius scale ─────────────────────────────────────────────────────────
+   The source registered these through `@theme inline`, which would emit
+   --radius-sm/md/lg/xl into :root and overwrite the host's own radius tokens.
+   Applying them as scoped utility overrides reproduces the same rendering
+   without touching the global scale. Specificity (0,2,0) beats Tailwind's
+   (0,1,0), and the rules only match inside the scope. */
+.lp-alhurra-mouad .rounded-sm { border-radius: calc(var(--alh-radius) * 0.6); }
+.lp-alhurra-mouad .rounded-md { border-radius: calc(var(--alh-radius) * 0.8); }
+.lp-alhurra-mouad .rounded-lg { border-radius: var(--alh-radius); }
+.lp-alhurra-mouad .rounded-xl { border-radius: calc(var(--alh-radius) * 1.4); }
+.lp-alhurra-mouad .rounded-2xl { border-radius: calc(var(--alh-radius) * 1.8); }
+.lp-alhurra-mouad .rounded-3xl { border-radius: calc(var(--alh-radius) * 2.2); }
+
+/* ── Conversion grid ──────────────────────────────────────────────────── */
+
+.lp-alhurra-mouad .conversion-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .lp-alhurra-mouad .conversion-grid {
+    direction: ltr;
+    grid-template-columns: 1.27fr 0.93fr;
+    grid-template-areas:
+      "problems why"
+      "offer why";
+  }
+
+  .lp-alhurra-mouad .conversion-grid > * {
+    direction: rtl;
+  }
+
+  .lp-alhurra-mouad .problems-panel {
+    grid-area: problems;
+  }
+
+  .lp-alhurra-mouad .why-panel {
+    grid-area: why;
+  }
+
+  .lp-alhurra-mouad .offer-panel {
+    grid-area: offer;
+  }
+}
+
+/* ==========================================================================
+   Gommage Nilla product theme overrides
+   Already self-scoped in the source via main[data-product]; nested under the
+   landing scope so it cannot escape.
+   ========================================================================== */
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] {
+  background-color: #fffcf7;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] h1,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] h2,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] h3,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#bd7007\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#35251d\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#382820\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#3c2b22\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#3a291f\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#3a2a22\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#33241c\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#2d1e17\] {
+  color: #082b5c;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .border-\[\#d79029\] {
+  border-color: #d99a2b;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] p,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] li,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] label,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#3d3028\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#30221b\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#49372d\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#4d4037\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#261508\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-\[\#5e3909\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-gray-600,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-gray-700,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-gray-800,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .text-gray-900 {
+  color: #082b5c;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .rotate-\[-7deg\].border-\[\#e7a42c\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .rotate-\[-7deg\].bg-\[\#f6c65a\] {
+  border-color: #d99a2b !important;
+  background-color: #fff8ed !important;
+  box-shadow: 0 8px 24px rgba(8, 43, 92, 0.15) !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .rotate-\[-7deg\].border-\[\#e7a42c\]::before {
+  border-color: #082b5c !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .rotate-\[-7deg\].border-\[\#e7a42c\] span,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .rotate-\[-7deg\].border-\[\#e7a42c\] strong {
+  color: #082b5c !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .bg-gradient-to-b.from-\[\#d99b32\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .bg-gradient-to-b.from-\[\#da9429\] {
+  background: linear-gradient(to bottom, #d99a2b, #b86a03) !important;
+  color: #ffffff;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] strong.text-\[\#2d1e17\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] strong.text-\[\#b96c05\] {
+  color: #082b5c;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .line-through.decoration-\[\#963a2f\],
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .line-through.decoration-\[\#87382c\] {
+  text-decoration-color: #8b8177;
+  color: #8b8177;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] .peer:checked ~ div {
+  border-color: #d99a2b !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 14px 30px rgba(217, 154, 43, 0.18) !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] input:focus-visible,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] textarea:focus-visible {
+  border-color: #d99a2b !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] footer {
+  background-color: #061f43 !important;
+  color: #f5f1ea !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] footer h2 {
+  color: #ffffff !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] footer p,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] footer a,
+.lp-alhurra-mouad main[data-product="gommage-nilla"] footer nav a {
+  color: #f5f1ea !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] footer a:hover {
+  color: #d99a2b !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] footer svg {
+  color: #d99a2b !important;
+}
+
+.lp-alhurra-mouad main[data-product="gommage-nilla"] footer .border-white\/10 {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #e8d5b8 !important;
+}

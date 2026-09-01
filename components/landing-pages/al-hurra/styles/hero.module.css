@@ -1,0 +1,76 @@
+/* Hero: product cutout beside the headline stack. `wrap-reverse` puts the copy
+   above the image on narrow screens while keeping the image first in the DOM. */
+
+.hero {
+  position: relative;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(4px, 1.5vw, 16px) 20px clamp(28px, 5vw, 52px);
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  gap: clamp(16px, 3vw, 32px) clamp(24px, 4vw, 48px);
+}
+
+.media {
+  flex: 1 1 320px;
+  min-width: 280px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  max-height: min(74vh, 620px);
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  mix-blend-mode: multiply;
+}
+
+.copy {
+  flex: 1 1 340px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.4vw, 22px);
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--brass-700);
+}
+
+.kicker::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--brass-200);
+}
+
+.title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.25;
+  font-weight: 800;
+  font-size: clamp(26px, 6.4vw, 40px);
+}
+
+.titleAccent {
+  color: var(--fassi-600);
+}
+
+.assurance {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-700);
+}

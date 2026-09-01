@@ -1,0 +1,79 @@
+/* Customer review cards with the decorative pager dots underneath. */
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(14px, 2.2vw, 20px);
+}
+
+.card {
+  flex: 1 1 260px;
+  background: var(--sand-50);
+  border: 1px solid var(--border-hairline);
+  border-radius: 16px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* No margin reset: the source page leaves <figure> on the UA default
+     (1em 40px), which sets both the row rhythm and the card width. */
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-hairline);
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.stars {
+  color: var(--brass-500);
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.card .body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink-700);
+  text-wrap: pretty;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-hairline);
+}
+
+.dotActive {
+  width: 9px;
+  height: 9px;
+  background: var(--fassi-600);
+}

@@ -1,0 +1,84 @@
+/* Fixed bottom order bar. Mirrors the selected pack's running total. */
+
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: var(--fassi-600);
+  box-shadow: 0 -4px 18px rgba(20, 38, 31, 0.18);
+  padding: 8px 12px;
+}
+
+.inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.thumb {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  background: var(--sand-100);
+  border-radius: 8px;
+}
+
+.price {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--white);
+}
+
+.amount {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.terms {
+  font-size: 11.5px;
+  opacity: 0.85;
+}
+
+.cta {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  border: 0;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--fassi-600) 78%, var(--atlas-900));
+  color: var(--white);
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+
+.cta:hover {
+  background: color-mix(in srgb, var(--fassi-600) 62%, var(--atlas-900));
+}
+
+.ctaChevron {
+  opacity: 0.8;
+}
+
+.lock {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(20, 38, 31, 0.22);
+}

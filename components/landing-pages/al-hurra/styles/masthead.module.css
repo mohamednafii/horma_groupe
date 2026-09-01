@@ -1,0 +1,73 @@
+/* Header: logo flanked by two fading zellige friezes, over an ornament rule. */
+
+.masthead {
+  position: relative;
+  padding: 18px 16px 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2.5vw, 20px);
+}
+
+.frieze {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The end-side frieze is the same artwork mirrored, so the fade runs outward
+   on both sides of the logo. */
+.friezeEnd {
+  transform: scaleX(-1);
+}
+
+.friezeBand {
+  display: block;
+  flex: 1;
+  min-width: 0;
+}
+
+.friezeCap {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.logo {
+  flex: 0 0 auto;
+  width: min(48vw, 210px);
+  height: auto;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+.divider {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+}
+
+.divider::before {
+  background: linear-gradient(to left, var(--brass-200), rgba(217, 190, 147, 0));
+}
+
+.divider::after {
+  background: linear-gradient(to right, var(--brass-200), rgba(217, 190, 147, 0));
+}
+
+.dividerMark {
+  display: block;
+  flex: 0 0 auto;
+}

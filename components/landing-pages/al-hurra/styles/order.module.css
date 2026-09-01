@@ -1,0 +1,281 @@
+/* The dark order block: pack chooser on one side, confirmation form on the
+   other. This is the only section painted on the deep Atlas green. */
+
+.order {
+  position: relative;
+  background: var(--atlas-900);
+  padding: clamp(34px, 6vw, 64px) 0;
+}
+
+.inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Head text flips to the light-on-dark pairing here. */
+.headEyebrow {
+  color: var(--brass-400);
+}
+
+.headTitle {
+  color: var(--text-inverse);
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(14px, 2.2vw, 20px);
+  align-items: flex-start;
+}
+
+.card {
+  background: var(--sand-50);
+  border: 1px solid var(--border-hairline);
+  border-radius: 16px;
+  padding: clamp(18px, 2.6vw, 26px) clamp(16px, 2.2vw, 22px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.8vw, 16px);
+}
+
+.cardPacks {
+  flex: 1 1 300px;
+}
+
+.cardForm {
+  flex: 1 1 320px;
+}
+
+.card .cardTitle {
+  margin: 0 0 2px;
+  text-align: center;
+  font-size: clamp(18px, 4.4vw, 21px);
+  font-weight: 700;
+}
+
+/* ── Pack chooser ────────────────────────────────────────────────────────── */
+
+.packGroup {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.8vw, 16px);
+}
+
+.pack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 88px;
+  padding: 12px 14px;
+  text-align: right;
+  font-family: inherit;
+  background: var(--sand-50);
+  border: 2px solid var(--border-hairline);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: border-color 0.16s var(--ease-standard), background 0.16s var(--ease-standard);
+}
+
+.pack[aria-checked="true"] {
+  background: var(--sand-200);
+  border-color: var(--fassi-600);
+}
+
+.packImage {
+  width: 66px;
+  height: 66px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.packInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.packName {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--atlas-900);
+}
+
+.packPrice {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--fassi-600);
+}
+
+.packBadge {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  padding: 4px 12px;
+  background: var(--nila-800);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 0 12px 0 12px;
+}
+
+.packRadio {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--border-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.16s var(--ease-standard);
+}
+
+.packRadio::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.pack[aria-checked="true"] .packRadio {
+  border-color: var(--fassi-600);
+}
+
+.pack[aria-checked="true"] .packRadio::after {
+  background: var(--fassi-600);
+}
+
+/* ── Form ────────────────────────────────────────────────────────────────── */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fieldRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.field {
+  flex: 1 1 150px;
+  min-height: 48px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--atlas-900);
+  background: var(--white);
+  border: 1px solid var(--border-hairline);
+  border-radius: 10px;
+  outline: none;
+}
+
+.field:focus {
+  border-color: var(--fassi-600);
+}
+
+/* Invalid fields are only flagged once a submit has been attempted. */
+.formValidated .field:invalid {
+  border-color: var(--fassi-600);
+  background: color-mix(in srgb, var(--fassi-200) 26%, var(--white));
+}
+
+/* ── Quantity ────────────────────────────────────────────────────────────── */
+
+.qty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 48px;
+  padding: 6px;
+  background: var(--white);
+  border: 1px solid var(--border-hairline);
+  border-radius: 10px;
+}
+
+.qtyBtn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border-hairline);
+  border-radius: 8px;
+  background: var(--sand-100);
+  color: var(--atlas-900);
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.qtyBtn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.qtyValue {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ── Totals ──────────────────────────────────────────────────────────────── */
+
+.totals {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 4px 4px;
+}
+
+.totalsLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14.5px;
+  color: var(--ink-700);
+}
+
+.totalsLine span:last-child {
+  font-weight: 500;
+}
+
+.totalsSep {
+  height: 1px;
+  background: var(--clay-100);
+  margin: 2px 0;
+}
+
+.totalsGrand {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.totalsGrandLabel {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--atlas-900);
+}
+
+.totalsGrandValue {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--fassi-600);
+}
+
+.confirm {
+  padding: 12px 14px;
+  background: var(--atlas-100);
+  border: 1px solid var(--atlas-300);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--atlas-700);
+}
