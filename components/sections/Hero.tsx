@@ -13,7 +13,7 @@ export function Hero() {
         display: "flex",
         alignItems: "flex-end",
         minHeight: "clamp(560px, 78vh, 760px)",
-        backgroundImage: "url(/brand/container-port.webp)",
+        backgroundImage: "url(/brand/hero.png)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -87,8 +87,8 @@ export function Hero() {
           </Button>
         </div>
 
-        <HorizonRule inverse style={{ marginTop: 12 }} />
-
+        {/* <HorizonRule inverse style={{ marginTop: 12 }} /> */}
+{/* 
         <div
           style={{
             display: "grid",
@@ -99,7 +99,7 @@ export function Hero() {
           {heroStats.map((stat) => (
             <StatBlock key={stat.label} inverse value={stat.value} label={stat.label} sublabel={stat.sublabel} />
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

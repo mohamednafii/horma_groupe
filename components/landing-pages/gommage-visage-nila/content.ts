@@ -18,7 +18,8 @@ export const gommageVisageNila: LandingContent = {
     minQuantity: 1,
     maxQuantity: 9,
     currency: "درهم",
-    // Prices here reach four digits, so they are grouped: 1,347 درهم.
+    // Quantity goes up to 9, so a total can still reach four digits even
+    // though no single pack price does anymore — keep the grouping.
     groupThousands: true,
     // The bare jar reads better at 46px than the multi-pot offer shots.
     stickyThumb: { src: `${A}/product/jar-main.webp`, width: 217, height: 240 },
@@ -140,13 +141,13 @@ export const gommageVisageNila: LandingContent = {
     {
       id: "single",
       name: "علبة واحدة",
-      price: 459,
+      price: 125,
       image: { src: `${A}/product/pack1.webp`, width: 146, height: 190 },
     },
     {
       id: "double",
       name: "علبتان + التوصيل مجاناً",
-      price: 918,
+      price: 249,
       badge: "الأكثر طلباً",
       // The offer name promises free delivery, so the fee is waived for it.
       freeDelivery: true,
@@ -155,7 +156,7 @@ export const gommageVisageNila: LandingContent = {
     {
       id: "triple",
       name: "3 علب + أكبر تخفيض",
-      price: 1347,
+      price: 375,
       image: { src: `${A}/product/pack3.webp`, width: 190, height: 138 },
     },
   ],

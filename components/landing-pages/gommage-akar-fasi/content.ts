@@ -99,18 +99,18 @@ export const gommageAkarFasi: LandingContent = {
   ],
 
   packs: [
-    { id: "single", name: "علبة واحدة", price: 239, image: { src: `${A}/product/pack1.webp`, width: 137, height: 170 } },
+    { id: "single", name: "علبة واحدة", price: 176, image: { src: `${A}/product/pack1.webp`, width: 137, height: 170 } },
     {
       id: "double",
       name: "علبتان",
-      price: 459,
+      price: 349,
       badge: "الأكثر طلباً",
       image: { src: `${A}/product/pack2.webp`, width: 170, height: 110 },
     },
     {
       id: "triple",
       name: "3 علب",
-      price: 649,
+      price: 499,
       badge: "الأفضل قيمة",
       image: { src: `${A}/product/pack3.webp`, width: 170, height: 118 },
     },

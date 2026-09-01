@@ -20,12 +20,12 @@ export default function Home() {
       <SiteHeader />
       <main>
         <Hero />
-        <ComplianceStrip />
+        {/* <ComplianceStrip /> */}
         <Services />
         <Challenges />
         <Process />
         <Proof />
-        <Catalogue />
+        {/* <Catalogue /> */}
         <Faq />
         <ContactCta />
       </main>
