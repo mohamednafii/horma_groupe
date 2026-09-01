@@ -11,6 +11,7 @@ interface PacksSectionProps {
   selectedOffer: Offer;
   formErrors: FormErrors;
   submittedOrder: SubmittedOrder | null;
+  isSubmitting?: boolean;
   onClearError: (field: keyof FormErrors) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
@@ -22,6 +23,7 @@ export function PacksSection({
   selectedOffer,
   formErrors,
   submittedOrder,
+  isSubmitting,
   onClearError,
   onSubmit,
 }: PacksSectionProps) {
@@ -116,6 +118,7 @@ export function PacksSection({
           selectedOffer={selectedOffer}
           formErrors={formErrors}
           submittedOrder={submittedOrder}
+          isSubmitting={isSubmitting}
           onClearError={onClearError}
           onSubmit={onSubmit}
         />

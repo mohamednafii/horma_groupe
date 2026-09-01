@@ -28,6 +28,7 @@ export function ContactForm() {
           Email: form.get("email"),
           Company: form.get("company"),
           Phone: form.get("phone"),
+          Message: form.get("message"),
         }),
       });
 

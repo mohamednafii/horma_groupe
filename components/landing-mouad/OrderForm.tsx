@@ -19,7 +19,7 @@ import { Input } from '@/components/landing-mouad/ui/input';
 import { Offer } from '@/data/al-hurra/types';
 
 export type FormErrors = Partial<
-  Record<'fullName' | 'phone' | 'city' | 'address', string>
+  Record<'fullName' | 'phone' | 'city' | 'address' | 'submit', string>
 >;
 
 export type SubmittedOrder = {
@@ -33,6 +33,8 @@ interface OrderFormProps {
   selectedOffer: Offer;
   formErrors: FormErrors;
   submittedOrder: SubmittedOrder | null;
+  /** True while the order is being sent, so the button can't be double-fired. */
+  isSubmitting?: boolean;
   onClearError: (field: keyof FormErrors) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
@@ -41,6 +43,7 @@ export function OrderForm({
   selectedOffer,
   formErrors,
   submittedOrder,
+  isSubmitting = false,
   onClearError,
   onSubmit,
 }: OrderFormProps) {
@@ -218,11 +221,29 @@ export function OrderForm({
 
         <Button
           type="submit"
-          className="mt-5 h-14 w-full rounded-lg bg-gradient-to-b from-[#49bc57] to-[#29983a] text-xl font-black text-white shadow-[0_9px_22px_rgba(40,147,56,.18)] hover:brightness-105"
+          disabled={isSubmitting}
+          className="mt-5 h-14 w-full rounded-lg bg-gradient-to-b from-[#49bc57] to-[#29983a] text-xl font-black text-white shadow-[0_9px_22px_rgba(40,147,56,.18)] hover:brightness-105 disabled:opacity-70"
         >
           <LockKeyhole className="size-5" aria-hidden="true" />
-          تأكيد الطلب — <span dir="ltr">{totalPayable} DH</span>
+          {isSubmitting ? (
+            'جاري الإرسال…'
+          ) : (
+            <>
+              تأكيد الطلب — <span dir="ltr">{totalPayable} DH</span>
+            </>
+          )}
         </Button>
+
+        {/* Only rendered when sending actually failed, so the default layout
+            is unchanged. */}
+        {formErrors.submit && (
+          <p
+            role="alert"
+            className="mt-3 rounded-lg border border-[#e6b3ad] bg-[#fdecea] px-3 py-2 text-center text-xs font-semibold text-[#b42318]"
+          >
+            {formErrors.submit}
+          </p>
+        )}
         <FieldDescription className="mt-2 text-center text-[10px] text-[#665950]">
           لن يتم استخدام معلوماتك إلا لتأكيد الطلب والتوصيل
         </FieldDescription>

@@ -42,7 +42,7 @@ export async function POST(request) {
       );
     }
 
-    const { Name, Email, Company, Phone } = body;
+    const { Name, Email, Company, Phone, Message } = body;
 
     if (!Name?.trim() || !Email?.trim()) {
       console.error("[/api/submit] ❌ Validation failed — Name or Email missing.", { Name, Email });
@@ -52,7 +52,8 @@ export async function POST(request) {
       );
     }
 
-    console.log("[/api/submit] 📋 Data received:", { Name, Email, Company, Phone });
+    // Log the shape, not the contents: this runs on every public submission.
+    console.log("[/api/submit] 📋 Payload received — fields:", Object.keys(body).join(", "));
 
     /* ---------- 3. Authenticate ---------- */
     const jwt = new JWT({
@@ -61,7 +62,7 @@ export async function POST(request) {
       scopes: SCOPES,
     });
 
-    console.log("[/api/submit] 🔑 Authenticating with service account:", email);
+    console.log("[/api/submit] 🔑 Authenticating with the configured service account…");
 
     /* ---------- 4. Open spreadsheet ---------- */
     const doc = new GoogleSpreadsheet(sheetId, jwt);
@@ -81,13 +82,20 @@ export async function POST(request) {
     console.log("[/api/submit] 📄 Using sheet:", sheet.title);
 
     /* ---------- 5. Append row ---------- */
-    // Headers in the Google Sheet must be: Name | Email | Company | Phone
-    await sheet.addRow({
-      Name: Name.trim(),
-      Email: Email.trim(),
-      Company: Company?.trim() ?? "",
-      Phone: Phone?.trim() ?? "",
-    });
+    // Sheet headers are: Name | Email | Company | Phone | Message
+    // `raw: true` sends valueInputOption=RAW so Sheets stores each cell exactly
+    // as given. Without it Sheets parses the phone as a number and a Moroccan
+    // "0600000000" is written as 600000000.
+    await sheet.addRow(
+      {
+        Name: Name.trim(),
+        Email: Email.trim(),
+        Company: Company?.trim() ?? "",
+        Phone: Phone?.trim() ?? "",
+        Message: Message?.trim() ?? "",
+      },
+      { raw: true }
+    );
 
     console.log("[/api/submit] ✅ Row added successfully!");
 

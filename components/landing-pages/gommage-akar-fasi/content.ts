@@ -14,7 +14,7 @@ export const gommageAkarFasi: LandingContent = {
     defaultPack: 2,
     deliveryFee: 25,
     showStickyBar: true,
-    orderEndpoint: null,
+    orderEndpoint: "/api/order?page=gommage_akar_fasi",
     minQuantity: 1,
     maxQuantity: 9,
     currency: "درهم",

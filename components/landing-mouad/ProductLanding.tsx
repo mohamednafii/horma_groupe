@@ -21,6 +21,7 @@ interface ProductLandingProps {
 export function ProductLanding({ product }: ProductLandingProps) {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedOrder, setSubmittedOrder] = useState<SubmittedOrder | null>(
     null,
   );
@@ -44,7 +45,7 @@ export function ProductLanding({ product }: ProductLandingProps) {
     setSubmittedOrder(null);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -76,9 +77,45 @@ export function ProductLanding({ product }: ProductLandingProps) {
     }
 
     const totalPayable = selectedOffer.price + (selectedOffer.deliveryFee ?? 0);
+    const reference = `AH-${Date.now().toString().slice(-6)}`;
 
+    // Send the order before confirming anything: the customer must never be
+    // told the order went through if it did not reach the sheet.
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          page: product.slug,
+          product: product.name,
+          offer: selectedOffer.name,
+          quantity: selectedOffer.quantity,
+          reference,
+          name: fullName,
+          phone: normalizedPhone,
+          city,
+          address,
+          total: totalPayable,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? `Server error (${res.status})`);
+      }
+    } catch (err) {
+      console.error('Order submission failed:', err);
+      setFormErrors({
+        submit: 'تعذّر إرسال طلبك. يرجى المحاولة مرة أخرى أو التواصل معنا عبر واتساب.',
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    setIsSubmitting(false);
     setSubmittedOrder({
-      reference: `AH-${Date.now().toString().slice(-6)}`,
+      reference,
       customer: fullName,
       quantity: selectedOffer.quantity,
       price: totalPayable,
@@ -121,6 +158,7 @@ export function ProductLanding({ product }: ProductLandingProps) {
         selectedOffer={selectedOffer}
         formErrors={formErrors}
         submittedOrder={submittedOrder}
+        isSubmitting={isSubmitting}
         onClearError={clearError}
         onSubmit={handleSubmit}
       />
