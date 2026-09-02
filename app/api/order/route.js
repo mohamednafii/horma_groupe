@@ -3,6 +3,7 @@ import { JWT } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
 import { normalizeGooglePrivateKey, readEnv } from "@/lib/google-credentials";
+import { assertPrivateKeyUsable } from "@/lib/google-credentials-diagnostic";
 
 /* ------------------------------------------------------------------ */
 /*  POST /api/order                                                    */
@@ -110,6 +111,12 @@ export async function POST(request) {
         { status: 500 }
       );
     }
+
+    // DIAGNOSTIC (temporary): log the key's structure and prove whether
+    // Node/OpenSSL can parse the normalised PEM, before it ever reaches
+    // google-auth-library. Throws on failure so the catch below returns the
+    // same 500. Runs on every POST regardless of payload.
+    assertPrivateKeyUsable(privateKey, "[/api/order]");
 
     const body = await request.json().catch(() => null);
     if (!body) {
