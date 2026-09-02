@@ -11,15 +11,17 @@ import styles from "../styles/order.module.css";
 import { PriceSummary } from "./PriceSummary";
 import { QuantitySelector } from "./QuantitySelector";
 
+type Status = "idle" | "sending" | "success" | "error";
+
 /** Cash-on-delivery order form: contact fields, quantity, totals and submit. */
 export function OrderForm() {
   const { content, packIndex, quantity, productPrice, deliveryFee, total } = useOrderState();
   const { config, orderCopy, packs } = content;
   // Invalid fields are only highlighted after the first submit attempt.
   const [validated, setValidated] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     setValidated(true);
@@ -47,22 +49,39 @@ export function OrderForm() {
       payment: "cash_on_delivery",
     };
 
-    setSubmitted(true);
-
     if (!config.orderEndpoint) {
       // Parity with the source page: no back end is wired up yet.
       console.info("[al-hurra] order", order);
+      setStatus("success");
       return;
     }
 
-    void fetch(config.orderEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(order),
-    }).catch((error: unknown) => {
+    setStatus("sending");
+
+    try {
+      // A non-OK response is not a thrown error for fetch, and a hung request
+      // never resolves — so check res.ok explicitly and cap the wait. The
+      // customer must only see the confirmation once the order really landed.
+      const res = await fetch(config.orderEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(order),
+        signal: AbortSignal.timeout(15_000),
+      });
+
+      if (!res.ok) {
+        const detail = await res.json().catch(() => null);
+        throw new Error(detail?.error ?? `Server responded ${res.status}`);
+      }
+
+      setStatus("success");
+    } catch (error: unknown) {
       console.error("[al-hurra] order submission failed", error);
-    });
+      setStatus("error");
+    }
   }
+
+  const sending = status === "sending";
 
   return (
     <form
@@ -116,13 +135,17 @@ export function OrderForm() {
       <QuantitySelector />
       <PriceSummary />
 
-      <button type="submit" className={shared.btnPrimary}>
+      <button type="submit" className={shared.btnPrimary} disabled={sending} aria-busy={sending}>
         <Icon name="lock" size={19} stroke="var(--white)" strokeWidth={1.8} />
-        <span>{orderCopy.submit}</span>
+        <span>{sending ? orderCopy.sending : orderCopy.submit}</span>
       </button>
 
-      <p className={styles.confirm} role="status" hidden={!submitted}>
+      <p className={styles.confirm} role="status" hidden={status !== "success"}>
         {orderCopy.confirmation}
+      </p>
+
+      <p className={styles.error} role="alert" hidden={status !== "error"}>
+        {orderCopy.error}
       </p>
     </form>
   );

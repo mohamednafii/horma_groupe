@@ -168,7 +168,11 @@ export type LandingContent = {
     packsTitle: string;
     formTitle: string;
     submit: string;
+    /** Button label while the order is being sent. */
+    sending: string;
     confirmation: string;
+    /** Shown when the order could not be sent, in place of the confirmation. */
+    error: string;
     productPrice: string;
     deliveryPrice: string;
     /** Shown in place of the fee when the selected pack ships free. */

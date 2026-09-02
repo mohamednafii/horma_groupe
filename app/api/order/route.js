@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { JWT } from "google-auth-library";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
+import { normalizeGooglePrivateKey, readEnv } from "@/lib/google-credentials";
+
 /* ------------------------------------------------------------------ */
 /*  POST /api/order                                                    */
 /*  Appends a landing-page order to the "Commandes" tab of the         */
@@ -10,8 +12,37 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 /*  ("Feuille 1") is left exactly as it is.                            */
 /* ------------------------------------------------------------------ */
 
+// google-auth-library signs the JWT with Node crypto, so this handler must run
+// on the Node runtime, never the Edge one. It also must never be cached.
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 const ORDERS_TAB = "Commandes";
+
+// Every Google call is an outbound HTTPS request. On hosts where outbound
+// traffic is blocked or throttled the socket hangs with no error, and the
+// gateway eventually kills the request as a 504 with no body. Racing each call
+// against a timeout turns that into a fast, readable response instead.
+const GOOGLE_TIMEOUT_MS = 12_000;
+
+class GoogleTimeoutError extends Error {}
+
+function withTimeout(promise, label, ms = GOOGLE_TIMEOUT_MS) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(
+      () =>
+        reject(
+          new GoogleTimeoutError(
+            `${label} timed out after ${ms}ms — the server could not reach Google.`
+          )
+        ),
+      ms
+    );
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
 const ORDER_HEADERS = [
   "Date",
   "Page",
@@ -60,14 +91,18 @@ export async function POST(request) {
   const pageFromQuery = new URL(request.url).searchParams.get("page") ?? "";
 
   try {
-    const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-    const rawKey = process.env.GOOGLE_PRIVATE_KEY;
-    const sheetId = process.env.GOOGLE_SHEET_ID;
+    // Hostinger's env file keeps the wrapping quotes and literal `\n` on these
+    // values; locally Next's dotenv loader has already stripped them. Normalise
+    // so both environments hand `new JWT` a valid PEM — otherwise production
+    // fails at signing time with "DECODER routines::unsupported".
+    const email = readEnv(process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL);
+    const privateKey = normalizeGooglePrivateKey(process.env.GOOGLE_PRIVATE_KEY);
+    const sheetId = readEnv(process.env.GOOGLE_SHEET_ID);
 
-    if (!email || !rawKey || !sheetId) {
+    if (!email || !privateKey || !sheetId) {
       console.error("[/api/order] ❌ Missing env vars:", {
         hasEmail: !!email,
-        hasKey: !!rawKey,
+        hasKey: !!privateKey,
         hasSheetId: !!sheetId,
       });
       return NextResponse.json(
@@ -95,9 +130,9 @@ export async function POST(request) {
     // Log the shape, not the contents: this runs on every public submission.
     console.log("[/api/order] 📋 Payload received — fields:", Object.keys(body).join(", "));
 
-    const jwt = new JWT({ email, key: rawKey.replace(/\\n/g, "\n"), scopes: SCOPES });
+    const jwt = new JWT({ email, key: privateKey, scopes: SCOPES });
     const doc = new GoogleSpreadsheet(sheetId, jwt);
-    await doc.loadInfo();
+    await withTimeout(doc.loadInfo(), "Loading the spreadsheet");
 
     console.log("[/api/order] ✅ Connected to spreadsheet:", doc.title);
 
@@ -106,22 +141,29 @@ export async function POST(request) {
     let sheet = doc.sheetsByTitle[ORDERS_TAB];
     if (!sheet) {
       console.log("[/api/order] 📄 Creating tab:", ORDERS_TAB);
-      sheet = await doc.addSheet({ title: ORDERS_TAB, headerValues: ORDER_HEADERS });
+      sheet = await withTimeout(
+        doc.addSheet({ title: ORDERS_TAB, headerValues: ORDER_HEADERS }),
+        "Creating the orders tab"
+      );
     }
 
     // `raw: true` sends valueInputOption=RAW so Sheets stores each cell exactly
     // as given — otherwise a phone like "0600000000" is parsed as a number and
     // written as 600000000.
-    await sheet.addRow(row, { raw: true });
+    await withTimeout(sheet.addRow(row, { raw: true }), "Appending the order row");
 
     console.log("[/api/order] ✅ Order row added to", ORDERS_TAB);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
     console.error("[/api/order] ❌ Unexpected error:", err);
+
+    // 504 tells the caller the request reached us but the upstream (Google) did
+    // not answer in time — distinct from a bad request or our own bug.
+    const isTimeout = err instanceof GoogleTimeoutError;
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Internal server error" },
-      { status: 500 }
+      { status: isTimeout ? 504 : 500 }
     );
   }
 }
