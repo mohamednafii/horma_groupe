@@ -19,10 +19,10 @@ export const gommageNillaProduct: ProductData = {
   badgeLabel: 'مقشر الجسم بالنيلة الملكية',
   badgeSub: '250 G',
   heroImage: {
-    src: '/media/gommage-nilla/hero_image_gommage_nilla.png',
+    src: '/media/gommage-nilla/hero.png',
     alt: 'مقشر النيلة المغربية AL HURRA',
-    width: 1448,
-    height: 1086,
+    width: 1536,
+    height: 1024,
   },
   whyHeading: {
     prefix: 'لماذا تختارين مقشر النيلة ',
