@@ -33,7 +33,7 @@ export const gommageAkarFasi: LandingContent = {
     accentLineIndex: 1,
     cta: "اطلب الآن",
     assurance: "100% طبيعي / الدفع عند الاستلام",
-    image: { src: `${A}/product/hero.webp`, width: 563, height: 660 },
+    image: { src: `${A}/product/hero-image.png`, width: 563, height: 660 },
     imageAlt: "مقشر العكر الفاسي من الحرة",
   },
 
