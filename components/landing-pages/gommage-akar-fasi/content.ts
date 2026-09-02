@@ -99,18 +99,18 @@ export const gommageAkarFasi: LandingContent = {
   ],
 
   packs: [
-    { id: "single", name: "علبة واحدة", price: 176, image: { src: `${A}/product/pack1.webp`, width: 137, height: 170 } },
+    { id: "single", name: "علبة واحدة", price: 150, image: { src: `${A}/product/pack1.webp`, width: 137, height: 170 } },
     {
       id: "double",
       name: "علبتان",
-      price: 349,
+      price: 275,
       badge: "الأكثر طلباً",
       image: { src: `${A}/product/pack2.webp`, width: 170, height: 110 },
     },
     {
       id: "triple",
       name: "3 علب",
-      price: 499,
+      price: 400,
       badge: "الأفضل قيمة",
       image: { src: `${A}/product/pack3.webp`, width: 170, height: 118 },
     },
@@ -158,8 +158,8 @@ export const gommageAkarFasi: LandingContent = {
       id: "whatsapp",
       icon: "whatsapp",
       label: "تواصل عبر واتساب",
-      value: "06 12 34 56 78",
-      href: "https://wa.me/212612345678",
+      value: "0668-615964",
+      href: "https://wa.me/212 668-615964",
     },
   ],
 

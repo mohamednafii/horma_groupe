@@ -25,7 +25,7 @@ export function Hero() {
         style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(180deg,rgba(8,17,31,.58),rgba(8,17,31,.18) 42%,rgba(8,17,31,.80))",
+          background: "linear-gradient(180deg,rgba(49, 52, 57, 0.58),rgba(8,17,31,.18) 42%,rgba(8,17,31,.80))",
         }}
       />
 
