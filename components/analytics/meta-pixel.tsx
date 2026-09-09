@@ -100,31 +100,11 @@ fbq('track','PageView');`}
 /**
  * Fire a standard Meta Pixel event from any Client Component.
  *
- * NOT wired to anything yet — PageView is the only event live for now. This is
- * the hook for the next step (Purchase / Lead / …). Each landing page maps to
- * one product, so a later Purchase call identifies which campaign converted:
+ * Reuses the single site-wide pixel initialised by <MetaPixel /> — it never
+ * creates a second one. Guarded so it is a no-op on the server (SSR-safe) and
+ * before `fbevents.js` has finished loading (the base snippet queues the call).
  *
- *   // landing-mouad flow — components/landing-mouad/ProductLanding.tsx,
- *   // right after setSubmittedOrder(...) succeeds:
- *   trackMeta("Purchase", {
- *     content_name: product.name,
- *     content_ids: [product.slug],
- *     content_type: "product",
- *     value: totalPayable,
- *     currency: "MAD",
- *   });
- *
- *   // al-hurra flow — components/landing-pages/al-hurra/order/OrderForm.tsx,
- *   // right after setStatus("success"):
- *   trackMeta("Purchase", {
- *     content_name: content.brand.name,
- *     content_ids: [content.brand.slug],
- *     content_type: "product",
- *     value: total,
- *     currency: "MAD",
- *   });
- *
- * Guarded so it is a no-op on the server (SSR-safe) and before the pixel loads.
+ * For `Purchase`, prefer the typed `trackPurchase` wrapper below.
  */
 export function trackMeta(
   event: string,
@@ -134,4 +114,43 @@ export function trackMeta(
     return;
   }
   window.fbq("track", event, params);
+}
+
+/**
+ * Meta Pixel `Purchase` for a single-product landing page.
+ *
+ * Call this ONCE, only after an order is genuinely confirmed (the server
+ * accepted it) — never on page load or on the "Order" button click. Each
+ * landing page passes its own `contentId` so Events Manager shows which
+ * product / campaign converted.
+ *
+ *   trackPurchase({ value: totalPayable, contentId: "gommage-nilla", quantity });
+ *
+ * emits:
+ *
+ *   fbq('track', 'Purchase', {
+ *     value,
+ *     currency: 'MAD',
+ *     contents: [{ id: contentId, quantity }],
+ *     content_ids: [contentId],
+ *   });
+ *
+ * `currency` is always MAD. Caller is responsible for firing this at most once
+ * per order (see the ref guards in ProductLanding.tsx / al-hurra OrderForm.tsx).
+ */
+export function trackPurchase(params: {
+  /** Total amount actually charged for the order (product + delivery). */
+  value: number;
+  /** This landing page's unique product id — same value in `contents[].id` and `content_ids`. */
+  contentId: string;
+  /** Quantity actually ordered. */
+  quantity: number;
+}): void {
+  const { value, contentId, quantity } = params;
+  trackMeta("Purchase", {
+    value,
+    currency: "MAD",
+    contents: [{ id: contentId, quantity }],
+    content_ids: [contentId],
+  });
 }

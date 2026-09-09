@@ -15,6 +15,7 @@ import { ProductData } from './types';
 export const antiAgeProduct: ProductData = {
   id: 'anti-age',
   slug: 'creme-anti-age',
+  metaContentId: 'creme-anti-age',
   name: 'AL HURRA — Crème Hydratante Anti-Âge',
   subtitle: 'سر الجمال الطبيعي',
   title: 'لبشرة مشرقة وشابة',

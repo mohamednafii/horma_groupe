@@ -13,6 +13,7 @@ import { ProductData } from './types';
 export const gommageNillaProduct: ProductData = {
   id: 'gommage-nilla',
   slug: 'gommage-nilla',
+  metaContentId: 'gommage-nilla',
   name: 'AL HURRA — مقشر النيلة المغربي للجسم',
   subtitle: 'سر الجمال المغربي التقليدي',
   title: 'مقشر النيلة المغربية مع زيت الأركان',

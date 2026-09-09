@@ -57,6 +57,8 @@ export interface FAQItem {
 export interface ProductData {
   id: string;
   slug: string;
+  /** Unique product id sent to the Meta Pixel `Purchase` event for this landing page. */
+  metaContentId: string;
   name: string;
   subtitle: string;
   title: string;

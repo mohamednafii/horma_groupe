@@ -12,6 +12,7 @@ import { ProductData } from './types';
 export const cremeHydratanteProduct: ProductData = {
   id: 'creme-hydratante',
   slug: 'creme-hydratante',
+  metaContentId: 'creme-hydratante',
   name: 'AL HURRA — Crème Hydratante',
   subtitle: 'عناية يومية لبشرتك',
   title: 'لبشرة رطبة وناعمة',

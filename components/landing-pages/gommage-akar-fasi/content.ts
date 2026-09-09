@@ -11,6 +11,7 @@ const A = "/assets/gommage-akar-fasi";
 
 export const gommageAkarFasi: LandingContent = {
   config: {
+    metaContentId: "gommage-akar-fasi",
     defaultPack: 2,
     deliveryFee: 25,
     showStickyBar: true,

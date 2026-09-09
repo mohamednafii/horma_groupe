@@ -1,6 +1,7 @@
 'use client';
 
-import React, { FormEvent, useMemo, useState } from 'react';
+import React, { FormEvent, useMemo, useRef, useState } from 'react';
+import { trackPurchase } from '@/components/analytics/meta-pixel';
 import { ProductData } from '@/data/al-hurra/types';
 import { FAQSection } from './FAQSection';
 import { Footer } from './Footer';
@@ -25,6 +26,10 @@ export function ProductLanding({ product }: ProductLandingProps) {
   const [submittedOrder, setSubmittedOrder] = useState<SubmittedOrder | null>(
     null,
   );
+  // Meta Pixel `Purchase` is sent once per confirmed order. Keyed on the order
+  // reference so a genuine re-order (new reference, new sheet row) still counts,
+  // but a re-render or double-fire of the same success never does.
+  const purchaseTrackedRef = useRef<string | null>(null);
 
   const selectedOffer = useMemo(
     () =>
@@ -120,6 +125,16 @@ export function ProductLanding({ product }: ProductLandingProps) {
       quantity: selectedOffer.quantity,
       price: totalPayable,
     });
+
+    // Order confirmed by the server (res.ok) — fire Purchase exactly once.
+    if (purchaseTrackedRef.current !== reference) {
+      purchaseTrackedRef.current = reference;
+      trackPurchase({
+        value: totalPayable,
+        contentId: product.metaContentId,
+        quantity: selectedOffer.quantity,
+      });
+    }
 
     requestAnimationFrame(() => {
       document.getElementById('order-confirmation')?.scrollIntoView({

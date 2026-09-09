@@ -1,8 +1,9 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
+import { trackPurchase } from "@/components/analytics/meta-pixel";
 import { useOrderState } from "../OrderStateProvider";
 import type { OrderPayload } from "../types";
 import { Icon } from "../ui/icons";
@@ -20,6 +21,19 @@ export function OrderForm() {
   // Invalid fields are only highlighted after the first submit attempt.
   const [validated, setValidated] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
+  // Meta Pixel `Purchase` fires at most once per page view. This flow has no
+  // per-order reference, so a second submit in the same visit is treated as the
+  // same order and not re-tracked.
+  const purchaseTracked = useRef(false);
+
+  /** Reached only when the order is genuinely confirmed (server accepted it). */
+  function markSuccess() {
+    setStatus("success");
+    if (!purchaseTracked.current) {
+      purchaseTracked.current = true;
+      trackPurchase({ value: total, contentId: config.metaContentId, quantity });
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -52,7 +66,7 @@ export function OrderForm() {
     if (!config.orderEndpoint) {
       // Parity with the source page: no back end is wired up yet.
       console.info("[al-hurra] order", order);
-      setStatus("success");
+      markSuccess();
       return;
     }
 
@@ -74,7 +88,7 @@ export function OrderForm() {
         throw new Error(detail?.error ?? `Server responded ${res.status}`);
       }
 
-      setStatus("success");
+      markSuccess();
     } catch (error: unknown) {
       console.error("[al-hurra] order submission failed", error);
       setStatus("error");

@@ -110,6 +110,8 @@ export type SectionHeading = {
 };
 
 export type LandingConfig = {
+  /** Unique product id sent to the Meta Pixel `Purchase` event for this landing page. */
+  metaContentId: string;
   /** Pack preselected on load, 1-based. */
   defaultPack: number;
   /** Flat delivery fee, waived for packs marked `freeDelivery`. */

@@ -11,6 +11,7 @@ const A = "/assets/gommage-visage-nila";
 
 export const gommageVisageNila: LandingContent = {
   config: {
+    metaContentId: "gommage-visage-nila",
     defaultPack: 2,
     deliveryFee: 25,
     showStickyBar: true,
