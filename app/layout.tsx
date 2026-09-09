@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter, Poppins } from "next/font/google";
 
+import { MetaPixel } from "@/components/analytics/meta-pixel";
+
 import "./globals.css";
 
 /* Horma Group type system:
@@ -48,6 +50,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <style>{`.hg-reveal{opacity:1!important;transform:none!important}`}</style>
         </noscript>
         {children}
+        {/* One Meta Pixel for the whole site — see components/analytics/meta-pixel.tsx */}
+        <MetaPixel />
       </body>
     </html>
   );
