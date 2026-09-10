@@ -12,7 +12,9 @@ import { StickyOrderBar } from "./StickyOrderBar";
 import { TrustStrip } from "./TrustStrip";
 import type { LandingContent } from "./types";
 import styles from "./styles/landing.module.css";
+import { WhatsAppBand, WhatsAppFab } from "./ui/WhatsAppCta";
 import { ZelligeCorners } from "./ui/ZelligeCorners";
+import { buildOrderMessage } from "@/lib/whatsapp";
 
 /**
  * The AL HURRA product landing page.
@@ -57,10 +59,18 @@ export function AlHurraLanding({ content }: { content: LandingContent }) {
           <OrderSection heading={headings.order} formTitle={orderCopy.formTitle} />
           <TrustStrip points={content.trustPoints} label={sectionLabels.trust} />
           <FaqSection heading={headings.faq} faqs={content.faqs} />
+          {/* Last prompt before the footer, for a reader who got this far
+              without ordering. The pre-fill names the product only — no price,
+              since no pack is in view here. */}
+          <WhatsAppBand message={buildOrderMessage(hero.kicker)} />
         </main>
 
         <LandingFooter contacts={content.contactPoints} legal={content.legalLinks} />
         {config.showStickyBar ? <StickyOrderBar /> : null}
+        <WhatsAppFab
+          message={buildOrderMessage(hero.kicker)}
+          hasStickyBar={config.showStickyBar}
+        />
       </div>
     </OrderStateProvider>
   );

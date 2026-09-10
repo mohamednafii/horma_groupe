@@ -3,12 +3,15 @@
 import type { FormEvent } from "react";
 import { useRef, useState } from "react";
 
-import { trackPurchase } from "@/components/analytics/meta-pixel";
+import { trackMeta, trackPurchase } from "@/components/analytics/meta-pixel";
+import { buildOrderMessage } from "@/lib/whatsapp";
 import { useOrderState } from "../OrderStateProvider";
+import { WhatsAppCta } from "../ui/WhatsAppCta";
 import type { OrderPayload } from "../types";
 import { Icon } from "../ui/icons";
 import shared from "../styles/shared.module.css";
 import styles from "../styles/order.module.css";
+import whatsapp from "../styles/whatsapp.module.css";
 import { PriceSummary } from "./PriceSummary";
 import { QuantitySelector } from "./QuantitySelector";
 
@@ -31,6 +34,9 @@ export function OrderForm() {
     setStatus("success");
     if (!purchaseTracked.current) {
       purchaseTracked.current = true;
+      // The completed form is the lead; the accepted order is the sale. Neither
+      // is reachable from a validation failure or a rejected request.
+      trackMeta("Lead");
       trackPurchase({ value: total, contentId: config.metaContentId, quantity });
     }
   }
@@ -161,6 +167,17 @@ export function OrderForm() {
       <p className={styles.error} role="alert" hidden={status !== "error"}>
         {orderCopy.error}
       </p>
+
+      {/* Alternative for anyone who stalls on the form, and the fallback when
+          sending fails. The pre-fill quotes the pack and total currently
+          selected — product copy only, never what the customer typed. */}
+      <div className={whatsapp.divider} aria-hidden="true">
+        أو
+      </div>
+      <WhatsAppCta
+        variant="outline"
+        message={buildOrderMessage(content.hero.kicker, total, config.currency)}
+      />
     </form>
   );
 }

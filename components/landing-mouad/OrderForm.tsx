@@ -17,6 +17,7 @@ import {
 } from '@/components/landing-mouad/ui/field';
 import { Input } from '@/components/landing-mouad/ui/input';
 import { Offer } from '@/data/al-hurra/types';
+import { WhatsAppCta } from './WhatsAppCta';
 
 export type FormErrors = Partial<
   Record<'fullName' | 'phone' | 'city' | 'address' | 'submit', string>
@@ -37,6 +38,8 @@ interface OrderFormProps {
   isSubmitting?: boolean;
   onClearError: (field: keyof FormErrors) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  /** Chat pre-fill quoting the selected pack's total. */
+  whatsappMessage?: string;
 }
 
 export function OrderForm({
@@ -46,6 +49,7 @@ export function OrderForm({
   isSubmitting = false,
   onClearError,
   onSubmit,
+  whatsappMessage,
 }: OrderFormProps) {
   const totalPayable = selectedOffer.price + (selectedOffer.deliveryFee ?? 0);
 
@@ -244,6 +248,21 @@ export function OrderForm({
             {formErrors.submit}
           </p>
         )}
+
+        {/* Escape hatch for anyone who stalls on the form — and the route the
+            error message above points at when sending fails. */}
+        <div className="mt-4 flex items-center gap-3" aria-hidden="true">
+          <span className="h-px flex-1 bg-[#ead9c2]" />
+          <span className="text-[10px] font-bold text-[#8a7a6e]">أو</span>
+          <span className="h-px flex-1 bg-[#ead9c2]" />
+        </div>
+        <WhatsAppCta
+          label="اطلب عبر واتساب"
+          message={whatsappMessage}
+          variant="outline"
+          className="mt-3"
+        />
+
         <FieldDescription className="mt-2 text-center text-[10px] text-[#665950]">
           لن يتم استخدام معلوماتك إلا لتأكيد الطلب والتوصيل
         </FieldDescription>

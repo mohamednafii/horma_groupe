@@ -1,10 +1,12 @@
 import Image from "next/image";
 
+import { buildOrderMessage } from "@/lib/whatsapp";
 import type { LandingContent } from "./types";
 import styles from "./styles/hero.module.css";
 import shared from "./styles/shared.module.css";
 import { Icon } from "./ui/icons";
 import { ScrollToOrderButton } from "./ui/ScrollToOrderButton";
+import { WhatsAppCta } from "./ui/WhatsAppCta";
 
 /** Product cutout, headline stack, primary CTA and the reassurance line. */
 export function HeroSection({ hero }: { hero: LandingContent["hero"] }) {
@@ -44,6 +46,10 @@ export function HeroSection({ hero }: { hero: LandingContent["hero"] }) {
             &lsaquo;
           </span>
         </ScrollToOrderButton>
+
+        {/* Second way in, for visitors who would rather chat than fill a form.
+            The terracotta CTA above stays the primary action. */}
+        <WhatsAppCta message={buildOrderMessage(hero.kicker)} />
 
         <p className={styles.assurance}>
           <Icon name="shield" size={19} stroke="var(--atlas-900)" strokeWidth={1.6} />

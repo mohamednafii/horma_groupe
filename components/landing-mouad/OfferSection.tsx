@@ -1,12 +1,15 @@
 import React from 'react';
 import { PackageCheck, Truck } from 'lucide-react';
 import { Offer } from '@/data/al-hurra/types';
+import { WhatsAppCta } from './WhatsAppCta';
 
 interface OfferSectionProps {
   offer?: Offer;
+  /** Chat pre-fill quoting the price shown in this panel. */
+  whatsappMessage?: string;
 }
 
-export function OfferSection({ offer }: OfferSectionProps) {
+export function OfferSection({ offer, whatsappMessage }: OfferSectionProps) {
   const displayPrice = offer?.price ?? 100;
   const displayOldPrice = offer?.oldPrice ?? 299;
 
@@ -58,6 +61,16 @@ export function OfferSection({ offer }: OfferSectionProps) {
               </b>
             </div>
           </div>
+
+          {/* Ordering by chat, offered at the moment the price lands — this
+              panel closes the benefits block, so it is also the first CTA a
+              reader meets after the reasons to buy. */}
+          <WhatsAppCta
+            label="اطلب عبر واتساب"
+            message={whatsappMessage}
+            variant="outline"
+            className="mx-auto mt-4 max-w-[340px]"
+          />
         </div>
       </div>
     </section>

@@ -14,6 +14,8 @@ interface PacksSectionProps {
   isSubmitting?: boolean;
   onClearError: (field: keyof FormErrors) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  /** Passed straight through to the order form's WhatsApp alternative. */
+  whatsappMessage?: string;
 }
 
 export function PacksSection({
@@ -26,6 +28,7 @@ export function PacksSection({
   isSubmitting,
   onClearError,
   onSubmit,
+  whatsappMessage,
 }: PacksSectionProps) {
   return (
     <section id="commande" className="scroll-mt-5 px-4 pb-7 lg:px-6">
@@ -121,6 +124,7 @@ export function PacksSection({
           isSubmitting={isSubmitting}
           onClearError={onClearError}
           onSubmit={onSubmit}
+          whatsappMessage={whatsappMessage}
         />
       </div>
     </section>

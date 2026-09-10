@@ -1,5 +1,7 @@
 import React from 'react';
 import { Mail, Phone } from 'lucide-react';
+import { WhatsAppIcon, WhatsAppLink } from '@/components/whatsapp/WhatsAppLink';
+import { WHATSAPP_DISPLAY } from '@/lib/whatsapp';
 
 export function Footer() {
   return (
@@ -50,6 +52,12 @@ export function Footer() {
                 0668615964
               </span>
             </a>
+            <WhatsAppLink className="flex items-center gap-2.5 transition hover:text-[#e3aa51]">
+              <WhatsAppIcon className="shrink-0 text-base text-[#d99834]" />
+              <span dir="ltr" className="font-semibold">
+                {WHATSAPP_DISPLAY}
+              </span>
+            </WhatsAppLink>
             <a
               href="mailto:alhurra177@gmail.com"
               className="flex items-center gap-2.5 transition hover:text-[#e3aa51]"

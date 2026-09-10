@@ -2,13 +2,20 @@ import React from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/landing-mouad/ui/button';
 import { ProductData } from '@/data/al-hurra/types';
+import { WhatsAppCta } from './WhatsAppCta';
 
 interface HeroSectionProps {
   product: ProductData;
   onOrderClick: () => void;
+  /** Chat pre-fill for the hero's WhatsApp alternative. */
+  whatsappMessage?: string;
 }
 
-export function HeroSection({ product, onOrderClick }: HeroSectionProps) {
+export function HeroSection({
+  product,
+  onOrderClick,
+  whatsappMessage,
+}: HeroSectionProps) {
   return (
     <section className="relative isolate overflow-hidden border-b border-[#eedcc6] bg-[#fffefa] min-[769px]:bg-[#fffdf9]">
       <div className="absolute inset-x-0 top-0 -z-10 h-52 bg-[radial-gradient(circle_at_78%_20%,rgba(221,166,77,.15),transparent_56%)] min-[769px]:hidden" />
@@ -90,7 +97,16 @@ export function HeroSection({ product, onOrderClick }: HeroSectionProps) {
             اطلب الآن
           </Button>
 
-          <div className="mx-auto mt-4 flex max-w-[540px] flex-wrap justify-center gap-x-5 gap-y-3 min-[769px]:mx-0 min-[769px]:justify-start max-[768px]:order-8">
+          {/* Second way to order, for visitors who would rather talk to someone
+              than fill a form. Same width as the gold CTA above it, quieter
+              colour so the form remains the primary path. */}
+          <WhatsAppCta
+            label="اطلب عبر واتساب"
+            message={whatsappMessage}
+            className="mt-3 max-[768px]:order-8"
+          />
+
+          <div className="mx-auto mt-4 flex max-w-[540px] flex-wrap justify-center gap-x-5 gap-y-3 min-[769px]:mx-0 min-[769px]:justify-start max-[768px]:order-9">
             {product.heroTrustItems.map(({ label, icon: Icon }) => (
               <div
                 key={label}

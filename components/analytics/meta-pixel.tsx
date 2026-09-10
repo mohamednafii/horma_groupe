@@ -47,6 +47,13 @@ declare global {
  */
 let lastTrackedPath: string | null = null;
 
+/**
+ * Names of the events already sent during this page view, backing
+ * `trackMetaOnce` below. Module scope for the same reasons as
+ * `lastTrackedPath`; the PageView effect clears it on a real navigation.
+ */
+const sentOnce = new Set<string>();
+
 export function MetaPixel() {
   const pathname = usePathname();
 
@@ -66,6 +73,8 @@ export function MetaPixel() {
 
     // Genuine client-side navigation to a new page.
     lastTrackedPath = pathname;
+    // A new page means a new set of once-per-view events (see trackMetaOnce).
+    sentOnce.clear();
     window.fbq?.("track", "PageView");
   }, [pathname]);
 
@@ -114,6 +123,25 @@ export function trackMeta(
     return;
   }
   window.fbq("track", event, params);
+}
+
+/**
+ * Like `trackMeta`, but sends `event` at most once per page view.
+ *
+ * For funnel steps a visitor can legitimately repeat without it meaning
+ * anything new — clicking "اطلب الآن" in the hero and again in the sticky bar
+ * is still one `InitiateCheckout`. Do NOT use it for `Contact`: each WhatsApp
+ * click is a genuine, separately countable contact.
+ */
+export function trackMetaOnce(
+  event: string,
+  params?: Record<string, unknown>,
+): void {
+  if (sentOnce.has(event)) {
+    return;
+  }
+  sentOnce.add(event);
+  trackMeta(event, params);
 }
 
 /**

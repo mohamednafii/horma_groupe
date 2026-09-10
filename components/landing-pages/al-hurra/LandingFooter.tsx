@@ -1,3 +1,4 @@
+import { WhatsAppLink } from "@/components/whatsapp/WhatsAppLink";
 import type { ContactPoint, LegalLink } from "./types";
 import styles from "./styles/footer.module.css";
 import shared from "./styles/shared.module.css";
@@ -20,9 +21,17 @@ export function LandingFooter({
             <div>
               <p className={styles.contactLabel}>{point.label}</p>
               <p className={styles.contactValue}>
-                <a className={styles.ltr} href={point.href} rel="noopener">
-                  {point.value}
-                </a>
+                {/* A WhatsApp contact goes through <WhatsAppLink> like every
+                    other WhatsApp CTA, so this one also reports `Contact` and
+                    resolves the number from lib/whatsapp.ts. Everything else
+                    (Instagram, e-mail) stays a plain link. */}
+                {point.href.startsWith("https://wa.me/") ? (
+                  <WhatsAppLink className={styles.ltr}>{point.value}</WhatsAppLink>
+                ) : (
+                  <a className={styles.ltr} href={point.href} rel="noopener">
+                    {point.value}
+                  </a>
+                )}
               </p>
             </div>
           </div>

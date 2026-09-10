@@ -1,4 +1,5 @@
 import type { LandingContent } from "@/components/landing-pages/al-hurra";
+import { buildWhatsAppUrl, WHATSAPP_DISPLAY } from "@/lib/whatsapp";
 
 /**
  * AL HURRA — Gommage Visage (قناع التقشير بالنيلة الزرقاء).
@@ -208,8 +209,8 @@ export const gommageVisageNila: LandingContent = {
       id: "whatsapp",
       icon: "whatsapp",
       label: "تواصل عبر واتساب",
-      value: "06 12 34 56 78",
-      href: "https://wa.me/212612345678",
+      value: WHATSAPP_DISPLAY,
+      href: buildWhatsAppUrl(),
     },
   ],
 

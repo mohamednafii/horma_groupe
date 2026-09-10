@@ -1,8 +1,14 @@
 'use client';
 
 import React, { FormEvent, useMemo, useRef, useState } from 'react';
-import { trackPurchase } from '@/components/analytics/meta-pixel';
+import {
+  trackMeta,
+  trackMetaOnce,
+  trackPurchase,
+} from '@/components/analytics/meta-pixel';
 import { ProductData } from '@/data/al-hurra/types';
+import { buildOrderMessage } from '@/lib/whatsapp';
+import { WhatsAppBand, WhatsAppFab } from './WhatsAppCta';
 import { FAQSection } from './FAQSection';
 import { Footer } from './Footer';
 import { HeroSection } from './HeroSection';
@@ -38,7 +44,14 @@ export function ProductLanding({ product }: ProductLandingProps) {
     [product.offers, selectedQuantity],
   );
 
+  /**
+   * The single "اطلب الآن" path — the hero button and the sticky bar both call
+   * it, so `InitiateCheckout` is reported the same way wherever the visitor
+   * starts. `trackMetaOnce` collapses a visitor who taps both (or taps twice)
+   * into the one checkout they actually started.
+   */
   const scrollToOrder = () => {
+    trackMetaOnce('InitiateCheckout');
     document.getElementById('commande')?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
@@ -126,9 +139,12 @@ export function ProductLanding({ product }: ProductLandingProps) {
       price: totalPayable,
     });
 
-    // Order confirmed by the server (res.ok) — fire Purchase exactly once.
+    // Everything below is past `res.ok`: the order really reached the sheet.
+    // Nothing here runs on a validation failure or a failed request.
     if (purchaseTrackedRef.current !== reference) {
       purchaseTrackedRef.current = reference;
+      // The completed form is the lead; the accepted order is the sale.
+      trackMeta('Lead');
       trackPurchase({
         value: totalPayable,
         contentId: product.metaContentId,
@@ -146,9 +162,21 @@ export function ProductLanding({ product }: ProductLandingProps) {
 
   const totalPayable = selectedOffer.price + (selectedOffer.deliveryFee ?? 0);
 
+  /* WhatsApp chat pre-fills. Each CTA quotes the price shown next to it, so the
+     message the customer sends matches what they were looking at; the roaming
+     CTAs (bubble, closing band) name the product only. Product copy exclusively
+     — nothing the customer typed goes into a wa.me URL. */
+  const offerMessage = buildOrderMessage(product.name, product.offers[0]?.price);
+  const selectedOfferMessage = buildOrderMessage(product.name, totalPayable);
+  const generalMessage = buildOrderMessage(product.name);
+
   return (
     <main className="overflow-x-clip pb-20 md:pb-0" data-product={product.id}>
-      <HeroSection product={product} onOrderClick={scrollToOrder} />
+      <HeroSection
+        product={product}
+        onOrderClick={scrollToOrder}
+        whatsappMessage={generalMessage}
+      />
 
       <section className="px-4 py-7 lg:px-6">
         <div className="conversion-grid mx-auto max-w-[1180px]">
@@ -159,7 +187,10 @@ export function ProductLanding({ product }: ProductLandingProps) {
             whyImage={product.whyImage}
             sideBenefits={product.sideBenefits}
           />
-          <OfferSection offer={product.offers[0]} />
+          <OfferSection
+            offer={product.offers[0]}
+            whatsappMessage={offerMessage}
+          />
         </div>
       </section>
 
@@ -176,13 +207,16 @@ export function ProductLanding({ product }: ProductLandingProps) {
         isSubmitting={isSubmitting}
         onClearError={clearError}
         onSubmit={handleSubmit}
+        whatsappMessage={selectedOfferMessage}
       />
 
       <TrustSection reassurance={product.reassurance} />
       <ReviewsSection testimonials={product.testimonials} />
       <FAQSection faqs={product.faqs} />
+      <WhatsAppBand message={generalMessage} />
       <Footer />
       <StickyCta price={totalPayable} onOrderClick={scrollToOrder} />
+      <WhatsAppFab message={generalMessage} />
     </main>
   );
 }

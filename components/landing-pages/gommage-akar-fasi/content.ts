@@ -1,4 +1,5 @@
 import type { LandingContent } from "@/components/landing-pages/al-hurra";
+import { buildWhatsAppUrl, WHATSAPP_DISPLAY } from "@/lib/whatsapp";
 
 /**
  * AL HURRA — Gommage Akar Fassi.
@@ -159,8 +160,8 @@ export const gommageAkarFasi: LandingContent = {
       id: "whatsapp",
       icon: "whatsapp",
       label: "تواصل عبر واتساب",
-      value: "0668-615964",
-      href: "https://wa.me/212 668-615964",
+      value: WHATSAPP_DISPLAY,
+      href: buildWhatsAppUrl(),
     },
   ],
 

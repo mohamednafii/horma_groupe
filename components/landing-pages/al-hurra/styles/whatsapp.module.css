@@ -1,0 +1,167 @@
+/* WhatsApp CTAs for the AL HURRA template.
+
+   WhatsApp's own green is kept — visitors recognise it — but pulled a little
+   darker and less saturated so it sits beside the Atlas olive and the Aker
+   Fassi terracotta rather than shouting over them. The terracotta buttons stay
+   the primary action everywhere; these are always the alternative. */
+
+.waTokens {
+  --wa-600: #1fa855;
+  --wa-700: #17853f;
+  --wa-tint: #eef8f1;
+  --wa-ink: #12603a;
+}
+
+/* ── Filled button, paired under a terracotta primary CTA ───────────────── */
+
+.solid {
+  composes: waTokens;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  min-height: 54px;
+  padding: 0 22px;
+  border-radius: 10px;
+  background: var(--wa-600);
+  color: var(--white);
+  font-family: inherit;
+  font-size: clamp(16px, 4vw, 19px);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(23, 133, 63, 0.2);
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+
+.solid:hover {
+  background: var(--wa-700);
+}
+
+/* ── Outlined button, for use inside a card that already has a primary ──── */
+
+.outline {
+  composes: waTokens;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 18px;
+  border: 1px solid rgba(31, 168, 85, 0.45);
+  border-radius: 10px;
+  background: var(--wa-tint);
+  color: var(--wa-ink);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.outline:hover {
+  background: #e3f4e9;
+  border-color: var(--wa-600);
+}
+
+.solid:focus-visible,
+.outline:focus-visible,
+.fab:focus-visible {
+  outline: 3px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.icon {
+  font-size: 1.3em;
+  flex: 0 0 auto;
+}
+
+/* ── Floating bubble ─────────────────────────────────────────────────────
+   Cleared of the fixed order bar (64px tall) by default, and of the home
+   indicator on iOS. `inset-inline-end` resolves to the left on these RTL
+   pages, opposite the side the order card's inputs sit on.
+   The bubble is `position: fixed`, so it adds no height and shifts nothing. */
+
+.fab {
+  composes: waTokens;
+  position: fixed;
+  inset-inline-end: 16px;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  z-index: 55; /* under the order bar's 60, above the page */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--wa-600);
+  color: var(--white);
+  font-size: 27px;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(16, 74, 40, 0.32);
+  transition: background var(--duration-fast) var(--ease-standard);
+}
+
+/* No order bar on this page, so the bubble drops to the normal corner inset. */
+.fabNoSticky {
+  bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+.fab:hover {
+  background: var(--wa-700);
+}
+
+/* ── Closing band, after the FAQ ─────────────────────────────────────────── */
+
+.band {
+  composes: waTokens;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: clamp(22px, 5vw, 30px) 20px;
+  border: 1px solid rgba(31, 168, 85, 0.28);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f4fbf6 0%, #e9f6ee 100%);
+  text-align: center;
+}
+
+.bandTitle {
+  margin: 0;
+  font-size: clamp(18px, 4.4vw, 22px);
+  font-weight: 700;
+  color: var(--wa-ink);
+}
+
+.bandNote {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--clay-500);
+}
+
+/* ── Divider used above the in-form alternative ──────────────────────────── */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--clay-400);
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-hairline);
+}
