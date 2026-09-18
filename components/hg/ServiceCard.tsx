@@ -8,12 +8,15 @@ export function ServiceCard({
   title,
   description,
   index,
+  tags,
 }: {
   icon: IconName;
   title: string;
   description: string;
   /** Zero-padded counter, a manifest habit used across the system. */
   index?: string;
+  /** Bullet-separated keyword line closing the card, e.g. "Maritime • Aérien". */
+  tags?: string;
 }) {
   return (
     <Card padding="lg" interactive style={{ display: "flex", flexDirection: "column", gap: 14, height: "100%" }}>
@@ -36,6 +39,21 @@ export function ServiceCard({
       </div>
       <h3 style={{ font: "var(--type-h4)", color: "var(--text-strong)" }}>{title}</h3>
       <p style={{ font: "var(--type-body-sm)", color: "var(--text-muted)" }}>{description}</p>
+      {tags ? (
+        /* Pushed to the foot of the card so the keyword lines align across the
+           row even when the descriptions differ in length. */
+        <p
+          style={{
+            marginTop: "auto",
+            paddingTop: 14,
+            borderTop: "1px solid var(--border-subtle)",
+            font: "var(--type-caption)",
+            color: "var(--text-subtle)",
+          }}
+        >
+          {tags}
+        </p>
+      ) : null}
     </Card>
   );
 }

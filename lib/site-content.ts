@@ -3,6 +3,8 @@
  *
  * Bracketed values ("[à compléter]", "[—]") are placeholders carried over from
  * the source design — they mark figures the business still has to supply.
+ *
+ * The brand is written "Horma Group", in two words, throughout.
  */
 
 export const contact = {
@@ -17,48 +19,99 @@ export const contact = {
 export const nav = [
   { label: "Accueil", href: "/" },
   { label: "À propos", href: "/about" },
+  { label: "Products", href: "/products" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
+] as const;
+export const navfooter = [
+  { label: "Accueil", href: "/" },
+  { label: "À propos", href: "/about" },
   { label: "Confidentialité", href: "/privacy-policy" },
   { label: "Conditions générales", href: "/terms-and-conditions" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
+/* The four capabilities, laid out two per row in the hero. `text` is the label
+   the grid aligns on; `note` sits under it, so the block keeps its full wording
+   without going back to four stacked full-width lines. */
 export const heroPoints = [
-  { icon: "search", text: "Sourcing et contrôle qualité chez le producteur, avant expédition." },
-  { icon: "fileText", text: "Dédouanement import et export traité par nos propres déclarants." },
-  { icon: "ship", text: "Maritime, aérien et routier — FCL, LCL et petits volumes groupés." },
+  {
+    icon: "search",
+    text: "Sourcing international",
+    note: "Recherche de fournisseurs adaptés à vos besoins.",
+  },
+  {
+    icon: "fileText",
+    text: "Formalités douanières",
+    note: "Procédures à l’import comme à l’export.",
+  },
+  {
+    icon: "ship",
+    text: "Transport & logistique",
+    note: "Expéditions par voie maritime, aérienne ou routière.",
+  },
+  {
+    icon: "route",
+    text: "Suivi des opérations",
+    note: "Coordination des intervenants jusqu’à la livraison.",
+  },
 ] as const;
 
-/** The same three capabilities, expanded into the services band. */
+/** Closes the services band, in the system's overline habit. */
+export const servicesTagline = "Sourcing • Transport international • Douane • Distribution";
+
+/** The services band head — badge, h2 and lead. */
+export const servicesHead = {
+  eyebrow: "Ce que nous faisons",
+  title: "Des solutions complètes pour vos opérations import-export",
+  lead: "De la recherche de fournisseurs à la livraison, nous vous accompagnons à chaque étape pour des opérations plus simples, sûres et performantes.",
+} as const;
+
+/** The four capabilities, expanded into the services band. Each carries the
+    photograph shown behind its tile; `imageAlt` describes the scene, not the
+    service, since the title already names the service to a screen reader. */
 export const services = [
   {
     icon: "search",
     index: "01",
-    title: "Sourcing et contrôle qualité",
-    body: "Nous sélectionnons le producteur, vérifions la marchandise sur site et photographions le contrôle avant chargement.",
+    title: "Sourcing & contrôle qualité",
+    body: "Nous sélectionnons les fournisseurs adaptés à votre besoin, comparons les offres et contrôlons la marchandise avant expédition.",
+    tags: "Fournisseurs • Offres • Négociation • Contrôle qualité",
+    image: "/services/sourcing-controle-qualite.webp",
+    imageAlt: "Contrôle qualité de marchandises avant expédition",
   },
   {
     icon: "fileText",
     index: "02",
-    title: "Dédouanement import / export",
-    body: "Dossier documentaire et déclaration préparés par nos propres déclarants, dans les deux sens.",
+    title: "Douane & conformité import-export",
+    body: "Nous préparons et suivons vos formalités douanières : vérification documentaire, classement tarifaire et coordination du dédouanement.",
+    tags: "Documents • Classement tarifaire • Dédouanement • Conformité",
+    image: "/services/douane-conformite.webp",
+    imageAlt: "Contrôle douanier et conformité import-export",
   },
   {
     icon: "ship",
     index: "03",
-    title: "Transport et groupage",
-    body: "Maritime, aérien et routier — FCL, LCL et petits volumes groupés, jusqu'à l'adresse finale.",
+    title: "Transport & logistique internationale",
+    body: "Nous organisons l’acheminement selon votre volume et vos délais : maritime, aérien ou routier, en FCL, LCL ou groupage.",
+    tags: "Maritime • Aérien • Routier • FCL / LCL",
+    image: "/services/transport-logistique.webp",
+    imageAlt: "Transport maritime, aérien et routier international",
   },
   {
     icon: "package",
     index: "04",
-    title: "Catalogue produits",
-    body: "Références sourcées au Maroc, avec origine, prix indicatif et quantité minimum de commande.",
+    title: "Catalogue & solutions produits",
+    body: "Une sélection de références sourcées au Maroc et à l’international, avec origine, MOQ et prix indicatif. Sourcing personnalisé sur demande.",
+    tags: "Origine • MOQ • Prix indicatif • Sourcing sur demande",
+    image: "/services/catalogue-produits.webp",
+    imageAlt: "Catalogue et sourcing de produits",
   },
 ] as const;
 
 export const heroStats = [
   { value: "7", label: "Producteurs partenaires", sublabel: "Producteurs référencés et actifs" },
-  { value: "82", label: "Pays desservis, import et export", sublabel: "Pays couverts par notre réseau commercial" },
+  { value: "82", label: "Pays desservis, import et export", sublabel: "Couverts par notre réseau" },
   { value: "32", label: "Catégories de produits au catalogue", sublabel: "Catégories actuellement disponibles" },
 ] as const;
 
@@ -70,50 +123,132 @@ export const complianceTags = [
   "Agrément en douane [à compléter]",
 ] as const;
 
+/** The challenges band head. `titleAccent` closes the h2 in orange. */
+export const challengesHead = {
+  eyebrow: "Ce que nous servons",
+  title: "Les défis de l'import-export, maîtrisés",
+  titleAccent: "simplement",
+  lead: "Une expertise à vos côtés pour des opérations plus fluides et plus sûres.",
+} as const;
+
+/** The three words the band leads on, under the lead sentence. */
+export const challengePillars = [
+  { label: "Délais", icon: "/challenges/icons/clock.webp" },
+  { label: "Conformité", icon: "/challenges/icons/shield.webp" },
+  { label: "Coûts", icon: "/challenges/icons/chart.webp" },
+] as const;
+
+/* The risk/answer pair, shown as the two slides of the band's carousel. Both
+   carry a title, a body and one of the supplied icon assets, so the slides
+   stay symmetrical row for row. */
 export const painPoints = [
-  "Délais annoncés puis repoussés, sans explication à donner à votre client.",
-  "Marchandise bloquée en douane pour un document manquant ou un code SH erroné.",
-  "Casse ou perte de qualité découverte à la réception, trop tard pour réclamer.",
-  "Produit non conforme au cahier des charges alors que l'échantillon était bon.",
-  "Coût final supérieur au devis, une fois les frais portuaires ajoutés.",
+  {
+    title: "Maîtrise des délais",
+    body: "Suivi des étapes pour mieux maîtriser les délais.",
+    icon: "/challenges/icons/clock.webp",
+  },
+  {
+    title: "Conformité douanière",
+    body: "Vérification des documents avant le dédouanement.",
+    icon: "/challenges/icons/document.webp",
+  },
+  {
+    title: "Protection de la marchandise",
+    body: "Préparation adaptée pour protéger vos produits.",
+    icon: "/challenges/icons/box.webp",
+  },
+  {
+    title: "Conformité des produits",
+    body: "Contrôle des produits avant expédition.",
+    icon: "/challenges/icons/shield.webp",
+  },
+  {
+    title: "Maîtrise des coûts",
+    body: "Identification des coûts avant chaque opération.",
+    icon: "/challenges/icons/coins.webp",
+  },
 ] as const;
 
 export const remedies = [
-  "Un planning daté par étape, et un point d'avancement à chaque changement de statut.",
-  "Dossier documentaire vérifié et code SH validé avant le départ, pas à l'arrivée.",
-  "Emballage adapté au mode de transport et photos avant chargement.",
-  "Contrôle qualité sur site, sur la base de votre cahier des charges signé.",
-  "Devis détaillé ligne par ligne, frais portuaires et droits inclus.",
+  {
+    title: "Planification & suivi",
+    body: "Suivi de chaque étape jusqu’à la livraison.",
+    icon: "/challenges/icons/clipboard.webp",
+  },
+  {
+    title: "Vérification documentaire",
+    body: "Contrôle des documents et informations douanières.",
+    icon: "/challenges/icons/document.webp",
+  },
+  {
+    title: "Préparation de l’expédition",
+    body: "Choix du conditionnement et du transport adapté.",
+    icon: "/challenges/icons/box.webp",
+  },
+  {
+    title: "Contrôle & conformité",
+    body: "Vérification des produits et quantités convenues.",
+    icon: "/challenges/icons/shield.webp",
+  },
+  {
+    title: "Visibilité sur les coûts",
+    body: "Identification des principaux coûts en amont.",
+    icon: "/challenges/icons/chart.webp",
+  },
 ] as const;
+/** The head note that balances the process band's title row. */
+export const processNote = "Un seul partenaire, à vos côtés à chaque étape.";
 
+/* The four steps, walked along the band's timeline. `icon` names a glyph from
+   components/hg/Icon — the step reads as a picture before it is read as text. */
 export const processSteps = [
   {
     step: "Étape 01",
-    title: "Cahier des charges et devis",
-    body: "Vous décrivez le produit, la quantité et la destination ; nous renvoyons un devis chiffré et daté.",
+    title: "Analyse de votre besoin",
+    icon: "search",
+    body: "Nous définissons le produit, les quantités, l’origine ou la destination et vos délais.",
   },
   {
     step: "Étape 02",
-    title: "Sourcing et contrôle",
-    body: "Nous sélectionnons le producteur ou le fournisseur, puis contrôlons la marchandise avant chargement.",
+    title: "Recherche et sécurisation de l’opération",
+    icon: "shieldCheck",
+    body: "Nous identifions les fournisseurs adaptés, comparons les offres et vérifions les conditions avant engagement.",
   },
   {
     step: "Étape 03",
-    title: "Documents et douane",
-    body: "Facture, B/L ou AWB, certificat d'origine et déclaration : nous constituons et déposons le dossier.",
+    title: "Formalités et coordination",
+    icon: "fileText",
+    body: "Nous préparons les documents et coordonnons les formalités douanières, à l’import comme à l’export.",
   },
   {
     step: "Étape 04",
-    title: "Transport et livraison",
-    body: "Acheminement jusqu'à l'adresse finale, avec une référence unique de suivi du départ à la réception.",
+    title: "Expédition et suivi jusqu’à destination",
+    icon: "package",
+    body: "Nous organisons le transport et vous tenons informé jusqu’à la réception à l’adresse convenue.",
   },
 ] as const;
 
 export const proofStats = [
-  { value: "36", label: "Producteurs référencés", sublabel: "Donnée à confirmer" },
-  { value: "82", label: "Pays d'expédition", sublabel: "Donnée à confirmer" },
-  { value: "32", label: "Catégories de produits", sublabel: "Donnée à confirmer" },
-  { value: "12", label: "Dossiers traités sur 12 mois", sublabel: "Donnée à confirmer" },
+  {
+    value: "100 %",
+    label: "Suivi personnalisé",
+    sublabel: "De la demande initiale à la livraison.",
+  },
+  {
+    value: "2",
+    label: "Flux maîtrisés",
+    sublabel: "Import et export, entièrement coordonnés.",
+  },
+  {
+    value: "4",
+    label: "Étapes clés",
+    sublabel: "Besoin, sourcing, formalités, transport.",
+  },
+  {
+    value: "1",
+    label: "Interlocuteur dédié",
+    sublabel: "Un point de contact pour tout le dossier.",
+  },
 ] as const;
 
 export const products = [
@@ -125,23 +260,23 @@ export const products = [
 export const faqs = [
   {
     q: "Quels sont les délais entre la commande et la livraison ?",
-    a: "Ils dépendent du mode et de la destination. En maritime, comptez la production, le pré-acheminement et la traversée ; le devis indique une fourchette datée par étape, et nous vous prévenons dès qu'une date bouge.",
+    a: "Ils dépendent du produit, du pays, du mode de transport et des formalités. Une estimation par étape vous est communiquée avant le lancement.",
   },
   {
     q: "Qui s'occupe de la douane, à l'import comme à l'export ?",
-    a: "Nous. Le dossier documentaire et la déclaration sont préparés par nos déclarants, dans les deux sens. Vous n'avez rien à déposer vous-même.",
+    a: "Nous préparons et vérifions les documents, puis coordonnons le dédouanement avec les intervenants concernés, dans les deux sens.",
   },
   {
     q: "Y a-t-il une quantité minimum de commande (MOQ) ?",
-    a: "Oui, et elle est affichée sur chaque référence du catalogue. Elle varie selon le produit et l'emballage du producteur.",
+    a: "Elle dépend du produit et des conditions du fournisseur. Nous cherchons une solution adaptée à votre volume, commande test comprise.",
   },
   {
     q: "Que se passe-t-il en cas de casse ou de non-conformité ?",
-    a: "Le contrôle avant chargement est photographié et daté, ce qui rend la réclamation opposable. Nous ouvrons le dossier auprès du transporteur ou de l'assurance et vous suivons jusqu'au règlement.",
+    a: "Nous privilégions le contrôle avant le départ. En cas d’avarie ou de non-conformité, nous vous accompagnons dans les démarches auprès des parties concernées.",
   },
   {
     q: "Acceptez-vous les petits volumes et les premières commandes ?",
-    a: "Oui. Les petits volumes partent en groupage (LCL), à partir du MOQ du produit. Un premier dossier de test est souvent le meilleur moyen de valider la chaîne.",
+    a: "Oui, première opération comme flux réguliers. Pour les petits volumes, nous recherchons la solution la plus adaptée pour maîtriser les coûts.",
   },
 ] as const;
 
@@ -167,8 +302,9 @@ export const footerColumns = [
 
 export const testimonial = {
   quote:
-    "Grâce à Horma Group, nous avons pu structurer notre première opération d'export et assurer la livraison de nos produits dans les délais prévus. Leur accompagnement sur les démarches et la logistique nous a permis d'avancer sereinement.",
-  name: "Youssef El Amrani",
-  role: "Directeur Commercial — Atlas Agro",
-  note: "Gabarit de témoignage — à compléter",
+    "Horma Group nous a accompagnés avec efficacité tout au long de notre opération. De la préparation du dossier à la coordination du transport, nous avons bénéficié d’un suivi clair, réactif et professionnel jusqu’à la livraison de notre marchandise.",
+  name: "Client Horma Group",
+  /** The new attribution supplies no function — Proof hides the line when empty. */
+  role: "",
+  note: "Gabarit du témoignage",
 } as const;

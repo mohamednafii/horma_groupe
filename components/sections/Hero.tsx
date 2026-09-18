@@ -12,7 +12,11 @@ export function Hero() {
         position: "relative",
         display: "flex",
         alignItems: "flex-end",
-        minHeight: "clamp(560px, 78vh, 760px)",
+        /* One screenful minus the sticky header (40px utility strip + nav), so
+           the whole hero is readable before any scroll. `svh` is the viewport
+           with the mobile URL bar expanded — `vh` would hide the CTAs behind it.
+           The clamp keeps it usable on very short and very tall screens. */
+        minHeight: "clamp(500px, calc(100svh - var(--header-h) - 40px), 820px)",
         backgroundImage: "url(/brand/hero.png)",
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -35,8 +39,10 @@ export function Hero() {
           position: "relative",
           display: "flex",
           flexDirection: "column",
-          gap: 28,
-          paddingBlock: "clamp(64px, 9vw, 104px)",
+          /* Tightened from 28 / 64–104px: the rhythm is unchanged, but the hero
+             now clears a 1366×768 laptop without pushing the CTAs off-screen. */
+          gap: "clamp(12px, 1.4vw, 16px)",
+          paddingBlock: "clamp(24px, 3vw, 56px)",
         }}
       >
         <SectionLabel tone="inverse">Casablanca, Maroc — Import &amp; Export</SectionLabel>
@@ -49,31 +55,41 @@ export function Hero() {
             letterSpacing: "var(--tracking-display)",
           }}
         >
-          Importer et exporter sans mauvaise surprise
+          Vos échanges internationaux, simplifiés
         </h1>
 
-        <p style={{ font: "var(--type-body-lg)", color: "rgba(255,255,255,.82)", maxWidth: 560 }}>
-          Horma Group gère le processus complet, du sourcing à la livraison, à l&apos;import comme à l&apos;export. Un seul
-          interlocuteur, un seul dossier, des documents conformes avant l&apos;arrivée en douane.
+        {/* 600px rather than 560: the lead then sets on two lines instead of
+            three at the same type size, which buys back a line of height. */}
+        <p style={{ font: "var(--type-body-lg)", color: "rgba(255,255,255,.82)", maxWidth: 600 }}>
+          Horma Group prend en charge vos opérations d&apos;import-export et coordonne chaque étape pour assurer une
+          circulation efficace et maîtrisée de vos marchandises.
         </p>
 
-        <ul style={{ display: "flex", flexDirection: "column", gap: 12, margin: 0, padding: 0, listStyle: "none" }}>
+        {/* Two per row on desktop, one per row on a phone. Inside a 640px cap,
+            240px tracks can only ever lay out two columns (a third would need
+            768px), and a 350px phone container fits one — the 2×2 block is
+            fixed by the geometry, so no media query is needed. */}
+        <ul
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
+            columnGap: 28,
+            rowGap: 12,
+            maxWidth: 640,
+            margin: 0,
+            padding: 0,
+            listStyle: "none",
+          }}
+        >
           {heroPoints.map((point) => (
-            <li
-              key={point.text}
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 10,
-                font: "var(--type-body-sm)",
-                color: "rgba(255,255,255,.86)",
-                maxWidth: 560,
-              }}
-            >
-              <span style={{ paddingTop: 2 }}>
+            <li key={point.text} style={{ display: "flex", gap: 10 }}>
+              <span style={{ display: "flex", flex: "none", paddingTop: 2 }}>
                 <Icon name={point.icon as IconName} size={17} color="var(--orange-400)" />
               </span>
-              {point.text}
+              <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                
+                <span style={{ font: "var(--type-caption)", color: "rgba(255,255,255,.7)" }}>{point.note}</span>
+              </span>
             </li>
           ))}
         </ul>

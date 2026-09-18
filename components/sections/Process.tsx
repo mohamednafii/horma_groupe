@@ -1,36 +1,36 @@
-import { Card, HorizonRule, Reveal, Section, SectionHead } from "@/components/hg";
-import { processSteps } from "@/lib/site-content";
+import { Icon, Reveal, Section, SectionHead } from "@/components/hg";
+import { processNote } from "@/lib/site-content";
+import { ProcessTimeline } from "./ProcessTimeline";
 
-/* Four-step process. Counters are zero-padded in mono — the manifest habit the
-   system uses for steps, carousels and pagination. */
+/* Four-step process, walked along a curve rather than listed in four cards.
+   Counters stay zero-padded in mono — the manifest habit the system uses for
+   steps, carousels and pagination. Geometry and states live in
+   `.hg-process-*` in globals.css. */
 export function Process() {
   return (
     <Section tone="sand" id="processus">
-      <Reveal>
-        <SectionHead
-          eyebrow="Comment ça marche"
-          title="Quatre étapes, à l'import comme à l'export"
-          lead="Chaque étape a une date, un livrable et un responsable nommé."
-        />
-      </Reveal>
+      <div className="hg-process-head">
+        <Reveal>
+          <SectionHead
+            eyebrow="Comment ça marche"
+            title="Une méthode claire, de la demande à la livraison"
+            lead="À l'import comme à l'export, nous pilotons chaque opération avec des étapes définies, des documents vérifiés et un suivi continu."
+          />
+        </Reveal>
 
-      <Reveal delay={60}>
-        <HorizonRule style={{ marginBlock: 40 }} />
-      </Reveal>
-
-      <div className="hg-grid-4">
-        {processSteps.map((step, i) => (
-          <Reveal key={step.title} delay={i * 70}>
-            <Card padding="lg" interactive style={{ display: "flex", flexDirection: "column", gap: 12, height: "100%" }}>
-              <span className="hg-mono" style={{ color: "var(--action-primary)" }}>
-                /{String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 style={{ font: "var(--type-h4)" }}>{step.title}</h3>
-              <p style={{ font: "var(--type-body-sm)", color: "var(--text-muted)" }}>{step.body}</p>
-            </Card>
-          </Reveal>
-        ))}
+        {/* Balances the title row on a wide screen; it repeats nothing the
+            steps say, so it drops out once the head takes the full width. */}
+        <Reveal delay={60} className="hg-process-note">
+          <span className="hg-process-note__icon" aria-hidden="true">
+            <Icon name="package" size={20} />
+          </span>
+          <p>{processNote}</p>
+        </Reveal>
       </div>
+
+      <Reveal delay={90} style={{ display: "block" }}>
+        <ProcessTimeline />
+      </Reveal>
     </Section>
   );
 }

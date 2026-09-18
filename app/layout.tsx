@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter, Poppins } from "next/font/google";
 
 import { MetaPixel } from "@/components/analytics/meta-pixel";
+import { AIAssistantFab } from "@/components/sections/AIAssistantFab";
 
 import "./globals.css";
 
@@ -50,6 +51,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <style>{`.hg-reveal{opacity:1!important;transform:none!important}`}</style>
         </noscript>
         {children}
+        {/* Site-wide floating controls sit beside the page, not inside it, so
+            every route gets them from one place. */}
+        <AIAssistantFab />
         {/* One Meta Pixel for the whole site — see components/analytics/meta-pixel.tsx */}
         <MetaPixel />
       </body>

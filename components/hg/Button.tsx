@@ -2,7 +2,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, CSSProperties, ReactNo
 
 import { Icon, type IconName } from "./Icon";
 
-export type ButtonVariant = "primary" | "secondary" | "tertiary" | "ghost";
+export type ButtonVariant = "primary" | "secondary" | "tertiary" | "ghost" | "ai";
 export type ButtonSize = "sm" | "md" | "lg";
 
 /* Heights and padding come straight from the design system's Button.
@@ -14,8 +14,22 @@ const SIZES: Record<ButtonSize, { h: number; padX: number; font: string; icon: n
   lg: { h: 52, padX: 26, font: "var(--text-body)", icon: 20, gap: 10 },
 };
 
+/** The icon box each size uses. Exported so a button composed on top of this
+    one can draw its own glyph — a spinner, say — at exactly the size the
+    `icon` prop would have given it, and keep the button's width stable. */
+export const BUTTON_ICON_SIZE: Record<ButtonSize, number> = {
+  sm: SIZES.sm.icon,
+  md: SIZES.md.icon,
+  lg: SIZES.lg.icon,
+};
+
 function skin(variant: ButtonVariant, inverse: boolean): CSSProperties {
   switch (variant) {
+    /* The AI variant paints nothing inline on purpose: its surface, hover,
+       press, focus and disabled states all live in `.hg-btn[data-variant="ai"]`
+       in globals.css. An inline colour here would out-rank every one of them. */
+    case "ai":
+      return {};
     case "secondary":
       return {
         background: "var(--action-secondary)",
@@ -97,7 +111,9 @@ export function Button({
     cursor: "pointer",
     textDecoration: "none",
     whiteSpace: "nowrap",
-    boxShadow: variant === "primary" ? "var(--shadow-brand)" : "none",
+    /* `undefined` for the AI variant, not "none": an inline shadow would beat
+       both its hover glow and the system's :focus-visible ring. */
+    boxShadow: variant === "primary" ? "var(--shadow-brand)" : variant === "ai" ? undefined : "none",
     ...skin(variant, inverse),
     ...style,
   };

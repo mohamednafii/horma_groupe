@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { HorizonRule, Icon, Logo } from "@/components/hg";
-import { contact, footerColumns, nav } from "@/lib/site-content";
+import { contact, footerColumns, nav, navfooter } from "@/lib/site-content";
 
 /* Footer — navy band, orange column headings, horizon rule above the legal
    line. Matches the system's Footer composition without inventing new copy. */
@@ -74,7 +74,7 @@ export function SiteFooter() {
             >
               Navigation
             </span>
-            {nav.map((item) => (
+            {navfooter.map((item) => (
               <Link key={item.href} href={item.href} className="hg-link-inverse" style={{ font: "var(--type-body-sm)" }}>
                 {item.label}
               </Link>

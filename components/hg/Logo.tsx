@@ -9,6 +9,14 @@ import type { CSSProperties } from "react";
    because inversion maps the brand orange to blue. */
 export type LogoVariant = "horizontal" | "stacked" | "mark";
 
+/* The supplied globe was cut from a white background with a hard alpha, so its
+   anti-aliased edge is blended with white instead of carrying partial alpha.
+   Invisible on the white header, that edge reads as a halo on the navy footer,
+   so dark surfaces get a copy whose white edge has been converted back into
+   alpha. Same drawing, same colours — only the matte differs. */
+const MARK_LIGHT = "/brand/horma-mark.webp";
+const MARK_DARK = "/brand/horma-mark-inverse.webp";
+
 export function Logo({
   variant = "horizontal",
   height = 36,
@@ -23,10 +31,12 @@ export function Logo({
   sub?: string | null;
   style?: CSSProperties;
 }) {
+  const markSrc = inverse ? MARK_DARK : MARK_LIGHT;
+
   if (variant === "mark") {
     return (
       <Image
-        src="/brand/horma-mark.webp"
+        src={markSrc}
         alt="Horma Group"
         width={270}
         height={210}
@@ -52,7 +62,7 @@ export function Logo({
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 10, ...style }}>
       <Image
-        src="/brand/horma-mark.webp"
+        src={markSrc}
         alt=""
         width={270}
         height={210}

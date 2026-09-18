@@ -18,9 +18,9 @@ export function ContactCta() {
       <div className="hg-split">
         <Reveal style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <SectionHead
-            eyebrow="Démarrer un dossier"
-            title="Dites-nous ce que vous importez ou exportez"
-            lead="Produit, quantité, origine et destination suffisent pour un premier devis. Réponse sous une heure ouvrée."
+            eyebrow="Démarrer votre projet"
+            title="Parlez-nous de votre besoin en import-export"
+            lead="Indiquez-nous simplement le produit, la quantité, le pays d'origine et la destination. Notre équipe étudie votre demande et vous propose une solution adaptée pour le sourcing, les formalités, le transport et la livraison. Recevez une première estimation personnalisée et démarrez votre opération avec Horma Group."
           />
 
           <HorizonRule />

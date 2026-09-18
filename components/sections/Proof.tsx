@@ -11,8 +11,8 @@ export function Proof() {
           <SectionHead
             inverse
             eyebrow="Preuve"
-            title="Des chiffres que nous pouvons documenter"
-            lead="Réseau, volumes et dossiers traités. Les valeurs marquées « à confirmer » attendent encore leur source interne."
+            title="Horma Group en chiffres"
+            lead="Quelques repères qui illustrent notre capacité à accompagner vos opérations d'import-export."
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: 32 }}>
             {proofStats.map((stat) => (
@@ -52,9 +52,13 @@ export function Proof() {
               </span>
               <span style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <span style={{ font: "var(--type-label)", color: "var(--white)" }}>{testimonial.name}</span>
-                <span style={{ font: "var(--type-caption)", color: "var(--text-on-inverse-muted)" }}>
-                  {testimonial.role}
-                </span>
+                {/* The reference attribution carries no function line; render it
+                    only once a real one is supplied. */}
+                {testimonial.role ? (
+                  <span style={{ font: "var(--type-caption)", color: "var(--text-on-inverse-muted)" }}>
+                    {testimonial.role}
+                  </span>
+                ) : null}
               </span>
             </div>
           </Card>

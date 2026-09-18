@@ -16,7 +16,7 @@ export function Faq() {
         <SectionHead
           eyebrow="FAQ"
           title="Les questions qui reviennent avant un premier dossier"
-          lead="Si la vôtre n'y est pas, écrivez-nous : la réponse arrive sous un jour ouvré."
+          lead="Si la vôtre n'y est pas, contactez-nous : notre équipe vous répond dans les meilleurs délais."
         />
 
         <div style={{ display: "flex", flexDirection: "column" }}>
