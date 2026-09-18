@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbLd, pageMetadata } from "@/lib/seo";
+
 import { LegalPage } from "@/components/sections/LegalPage";
 import { contact } from "@/lib/site-content";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Conditions générales | Horma Group",
-  description: "Conditions générales d'utilisation du site Horma Group.",
-};
+  description:
+    "Conditions générales d'utilisation du site Horma Group : accès au site, contenus, responsabilité et droit applicable.",
+  path: "/terms-and-conditions",
+});
 
 const sections = [
   {
@@ -33,7 +38,8 @@ const sections = [
 
 export default function TermsAndConditionsPage() {
   return (
-    <LegalPage
+    <>
+      <LegalPage
       eyebrow="Informations légales"
       title="Conditions générales"
       lead="Les règles d'utilisation du site Horma Group et le cadre des demandes qui y sont adressées."
@@ -48,6 +54,8 @@ export default function TermsAndConditionsPage() {
           </>
         ),
       }}
-    />
+      />
+      <JsonLd data={breadcrumbLd([{ name: "Conditions générales", path: "/terms-and-conditions" }])} />
+    </>
   );
 }

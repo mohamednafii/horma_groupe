@@ -7,6 +7,11 @@ import { heroPoints, heroStats } from "@/lib/site-content";
    One orange primary, one inverse tertiary: exactly one action per view. */
 export function Hero() {
   return (
+    <>
+      {/* The hero photograph is the LCP element. As a CSS background it
+          is only discovered once the stylesheet parses, so it is
+          preloaded here; React hoists this link into <head>. */}
+      <link rel="preload" as="image" href="/brand/hero.webp" fetchPriority="high" />
     <section
       style={{
         position: "relative",
@@ -17,7 +22,7 @@ export function Hero() {
            with the mobile URL bar expanded — `vh` would hide the CTAs behind it.
            The clamp keeps it usable on very short and very tall screens. */
         minHeight: "clamp(500px, calc(100svh - var(--header-h) - 40px), 820px)",
-        backgroundImage: "url(/brand/hero.png)",
+        backgroundImage: "url(/brand/hero.webp)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -98,7 +103,7 @@ export function Hero() {
           <Button href="/contact" variant="primary" size="lg" iconAfter="arrowRight">
             Demander un devis
           </Button>
-          <Button href="#catalogue" variant="tertiary" size="lg" inverse iconAfter="arrowUpRight">
+          <Button href="/products" variant="tertiary" size="lg" inverse iconAfter="arrowUpRight">
             Voir le catalogue
           </Button>
         </div>
@@ -118,5 +123,6 @@ export function Hero() {
         </div> */}
       </div>
     </section>
+    </>
   );
 }

@@ -5,14 +5,17 @@ import { Breadcrumb, Section, SectionLabel } from "@/components/hg";
 import { ProductGridSkeleton } from "@/components/products/ProductGrid";
 import { ProductsBrowser } from "@/components/products/ProductsBrowser";
 import { SiteFooter } from "@/components/sections/SiteFooter";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { SiteHeader } from "@/components/sections/SiteHeader";
 import { products } from "@/lib/products";
+import { breadcrumbLd, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Nos produits | Horma Group",
   description:
     "Références sourcées au Maroc et à l'international : origine, prix indicatif et quantité minimum de commande affichés par produit.",
-};
+  path: "/products",
+});
 
 export default function ProductsPage() {
   return (
@@ -48,6 +51,7 @@ export default function ProductsPage() {
         </Section>
       </main>
       <SiteFooter />
+      <JsonLd data={breadcrumbLd([{ name: "Nos produits", path: "/products" }])} />
     </div>
   );
 }

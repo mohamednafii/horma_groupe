@@ -19,8 +19,10 @@ export const contact = {
 export const nav = [
   { label: "Accueil", href: "/" },
   { label: "À propos", href: "/about" },
-  { label: "Products", href: "/products" },
-  { label: "Blog", href: "/blog" },
+  { label: "Produits", href: "/products" },
+  /* "Blog" lived here but /blog has no route: it 404-ed from every page
+     in the header and the mobile drawer. Restore the entry the day the
+     blog ships. */
   { label: "Contact", href: "/contact" },
 ] as const;
 export const navfooter = [
@@ -280,22 +282,26 @@ export const faqs = [
   },
 ] as const;
 
+/* The footer renders on every page, so its links are absolute: a bare
+   "#services" only resolves on the home page and did nothing anywhere else.
+   "#catalogue" pointed at a band that is currently commented out, and
+   "Mentions légales" pointed at "#". */
 export const footerColumns = [
   {
     title: "Services",
     links: [
-      { label: "Sourcing et contrôle qualité", href: "#services" },
-      { label: "Dédouanement import / export", href: "#services" },
-      { label: "Transport et groupage", href: "#processus" },
-      { label: "Catalogue produits", href: "#catalogue" },
+      { label: "Sourcing et contrôle qualité", href: "/#services" },
+      { label: "Dédouanement import / export", href: "/#services" },
+      { label: "Transport et groupage", href: "/#processus" },
+      { label: "Catalogue produits", href: "/products" },
     ],
   },
   {
     title: "Société",
     links: [
-      { label: "À propos de Horma Group", href: "#services" },
-      { label: "FAQ", href: "#faq" },
-      { label: "Mentions légales", href: "#" },
+      { label: "À propos de Horma Group", href: "/about" },
+      { label: "FAQ", href: "/#faq" },
+      { label: "Mentions légales", href: "/terms-and-conditions" },
     ],
   },
 ] as const;

@@ -22,6 +22,7 @@ const description =
   "اكتشفي قناع التقشير الطبيعي للوجه من الحُرّة، بالنيلة الزرقاء وأعشاب مغربية وزيت الأركان وزيت اللوز الحلو لبشرة ناعمة ومشرقة.";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/lp/gommage_visage_nila" },
   metadataBase: new URL(siteUrl),
   title,
   description,

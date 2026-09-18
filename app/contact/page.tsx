@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbLd, pageMetadata } from "@/lib/seo";
+
 import { Card, HorizonRule, Icon, Reveal, Section, SectionLabel } from "@/components/hg";
 import type { IconName } from "@/components/hg";
 import { ContactForm } from "@/components/sections/ContactForm";
@@ -7,10 +10,12 @@ import { SiteFooter } from "@/components/sections/SiteFooter";
 import { SiteHeader } from "@/components/sections/SiteHeader";
 import { contact } from "@/lib/site-content";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact | Horma Group",
-  description: "Parlez-nous de votre projet d'import, d'export, de sourcing ou de logistique.",
-};
+  description:
+    "Parlez-nous de votre projet d'import, d'export, de sourcing ou de logistique. Notre équipe à Casablanca vous répond avec les prochaines étapes.",
+  path: "/contact",
+});
 
 const details: { icon: IconName; label: string; value: string; href?: string }[] = [
   { icon: "mail", label: "E-mail", value: contact.email, href: `mailto:${contact.email}` },
@@ -88,6 +93,7 @@ export default function ContactPage() {
         </Section>
       </main>
       <SiteFooter />
+      <JsonLd data={breadcrumbLd([{ name: "Contact", path: "/contact" }])} />
     </div>
   );
 }

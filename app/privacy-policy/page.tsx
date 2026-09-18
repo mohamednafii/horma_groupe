@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbLd, pageMetadata } from "@/lib/seo";
+
 import { LegalPage } from "@/components/sections/LegalPage";
 import { contact } from "@/lib/site-content";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Politique de confidentialité | Horma Group",
-  description: "Politique de confidentialité du site Horma Group.",
-};
+  description:
+    "Politique de confidentialité du site Horma Group : données collectées, usage, conservation et vos droits.",
+  path: "/privacy-policy",
+});
 
 const sections = [
   {
@@ -29,7 +34,8 @@ const sections = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalPage
+    <>
+      <LegalPage
       eyebrow="Informations légales"
       title="Politique de confidentialité"
       lead="La manière dont Horma Group recueille et utilise les informations personnelles transmises via ce site."
@@ -44,6 +50,8 @@ export default function PrivacyPolicyPage() {
           </>
         ),
       }}
-    />
+      />
+      <JsonLd data={breadcrumbLd([{ name: "Politique de confidentialité", path: "/privacy-policy" }])} />
+    </>
   );
 }

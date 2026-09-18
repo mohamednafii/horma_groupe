@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbLd, pageMetadata } from "@/lib/seo";
+
 import { Button, Card, HorizonRule, Icon, Reveal, Section, SectionHead, SectionLabel, StatBlock } from "@/components/hg";
 import type { IconName } from "@/components/hg";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { SiteHeader } from "@/components/sections/SiteHeader";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "À propos | Horma Group",
   description:
-    "Horma Group accompagne vos projets de sourcing, import, export et logistique depuis Casablanca.",
-};
+    "Basée à Casablanca, Horma Group accompagne vos opérations de sourcing, d'import, d'export et de logistique, du besoin à la livraison.",
+  path: "/about",
+});
 
 const commitments: { icon: IconName; title: string; body: string }[] = [
   {
@@ -174,6 +178,7 @@ export default function AboutPage() {
         </Section>
       </main>
       <SiteFooter />
+      <JsonLd data={breadcrumbLd([{ name: "À propos", path: "/about" }])} />
     </div>
   );
 }

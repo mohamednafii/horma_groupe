@@ -18,6 +18,7 @@ const tajawal = Tajawal({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/lp/gommage_akar_fasi" },
   metadataBase: new URL(siteUrl),
   title: "مقشر العكر الفاسي من الحرة — سر الجمال المغربي",
   description:

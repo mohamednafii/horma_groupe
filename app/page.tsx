@@ -1,3 +1,6 @@
+import type { Metadata } from "next";
+
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Catalogue } from "@/components/sections/Catalogue";
 import { Challenges } from "@/components/sections/Challenges";
 import { ComplianceStrip } from "@/components/sections/ComplianceStrip";
@@ -9,6 +12,14 @@ import { Proof } from "@/components/sections/Proof";
 import { Services } from "@/components/sections/Services";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { SiteHeader } from "@/components/sections/SiteHeader";
+import { faqLd, localBusinessLd, pageMetadata, servicesLd, websiteLd } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Horma Group — Import & Export, Casablanca",
+  description:
+    "Sourcing, dédouanement, transport et suivi : Horma Group gère vos opérations d'import-export de bout en bout depuis Casablanca, avec un seul interlocuteur.",
+  path: "/",
+});
 
 /* Band order follows the design system's marketing page system: hero photo,
    reference strip, services, the problem/answer pair, process, one navy proof
@@ -30,6 +41,9 @@ export default function Home() {
         <ContactCta />
       </main>
       <SiteFooter />
+      {/* The home page carries the site graph, the service catalogue and the
+          FAQ that the band below actually renders. */}
+      <JsonLd data={[websiteLd(), localBusinessLd(), servicesLd(), faqLd()]} />
     </div>
   );
 }
